@@ -42,12 +42,6 @@ export const features: CapabilityItem[] = [
     title: 'Async + Event Hooks',
     description: 'Full async API with lifecycle event hooks.',
     iconPath: 'M13 2L3 14h9l-1 8 10-12h-9l1-8'
-  },
-  {
-    title: 'Org-Level Analytics',
-    description: 'Track questions across all users — deduplicated, trended, noise-filtered.',
-    iconPath: 'M3 3v18h18M7 16l4-4 4 4 5-6',
-    isNew: true
   }
 ]
 
