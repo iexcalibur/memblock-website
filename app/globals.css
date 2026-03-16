@@ -1426,6 +1426,317 @@
   }
 }
 
+/* ─── Block Builder Animation ────────────────────────────────────── */
+
+/*
+  15s cycle, 5 phases:
+  Phase 1 (0-13%):  Sentence fades in
+  Phase 2 (13-33%): Highlights appear sequentially
+  Phase 3 (33-60%): Blocks drop in sequentially
+  Phase 4 (60-80%): Graph edges draw
+  Phase 5 (80-93%): Hold
+  Reset (93-100%):  Everything fades out
+*/
+
+.bb-stage {
+  --bb-cycle: 15s;
+  margin-top: 2.4rem;
+  border: 1px solid rgba(46, 47, 55, 0.88);
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(16, 16, 18, 0.98) 0%, rgba(10, 10, 12, 0.98) 100%);
+  padding: clamp(24px, 3vw, 42px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ── Sentence ── */
+.bb-sentence {
+  text-align: center;
+  max-width: 640px;
+}
+
+.bb-sentence-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.bb-sentence-text {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.6vw, 1.22rem);
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+
+/* Sentence phase: fade in */
+@keyframes bbSentence {
+  0%      { opacity: 0; transform: translateY(10px); }
+  5%      { opacity: 1; transform: translateY(0); }
+  90%     { opacity: 1; }
+  96%     { opacity: 0; }
+  100%    { opacity: 0; }
+}
+
+.bb-anim[data-phase="sentence"] {
+  opacity: 0;
+  animation: bbSentence var(--bb-cycle) ease-in-out infinite;
+}
+
+/* ── Highlights ── */
+.bb-hl {
+  padding: 0.12em 0.32em;
+  border-radius: 4px;
+  transition: background 300ms ease;
+}
+
+@keyframes bbHlPref {
+  0%, 12%   { background: transparent; color: inherit; }
+  16%       { background: rgba(201, 154, 87, 0.28); color: #f1d9a8; }
+  90%       { background: rgba(201, 154, 87, 0.28); color: #f1d9a8; }
+  96%       { background: transparent; color: inherit; }
+  100%      { background: transparent; color: inherit; }
+}
+
+@keyframes bbHlFact {
+  0%, 18%   { background: transparent; color: inherit; }
+  22%       { background: rgba(88, 130, 207, 0.25); color: #a8c4f1; }
+  90%       { background: rgba(88, 130, 207, 0.25); color: #a8c4f1; }
+  96%       { background: transparent; color: inherit; }
+  100%      { background: transparent; color: inherit; }
+}
+
+@keyframes bbHlEvent {
+  0%, 24%   { background: transparent; color: inherit; }
+  28%       { background: rgba(52, 180, 100, 0.22); color: #a8f1c0; }
+  90%       { background: rgba(52, 180, 100, 0.22); color: #a8f1c0; }
+  96%       { background: transparent; color: inherit; }
+  100%      { background: transparent; color: inherit; }
+}
+
+.bb-anim[data-phase="hl-pref"]  { animation: bbHlPref var(--bb-cycle) ease-in-out infinite; }
+.bb-anim[data-phase="hl-fact"]  { animation: bbHlFact var(--bb-cycle) ease-in-out infinite; }
+.bb-anim[data-phase="hl-event"] { animation: bbHlEvent var(--bb-cycle) ease-in-out infinite; }
+
+/* ── Arrows ── */
+.bb-arrows {
+  width: 100%;
+  max-width: 480px;
+  height: 32px;
+  margin: 0.6rem 0;
+}
+
+.bb-arrows-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.bb-arrow-line {
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 3 3;
+}
+
+.bb-arrow-pref  { stroke: var(--gold-2); }
+.bb-arrow-fact  { stroke: #5882cf; }
+.bb-arrow-event { stroke: #34b464; }
+
+@keyframes bbArrows {
+  0%, 30%   { opacity: 0; }
+  35%       { opacity: 0.7; }
+  90%       { opacity: 0.7; }
+  96%       { opacity: 0; }
+  100%      { opacity: 0; }
+}
+
+.bb-anim[data-phase="arrows"] {
+  opacity: 0;
+  animation: bbArrows var(--bb-cycle) ease-in-out infinite;
+}
+
+/* ── Block cards grid ── */
+.bb-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(0.7rem, 1.4vw, 1.2rem);
+  width: 100%;
+  max-width: 640px;
+}
+
+@media (max-width: 540px) {
+  .bb-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+}
+
+.bb-block {
+  border: 1px solid rgba(49, 51, 58, 0.84);
+  border-radius: 12px;
+  background: rgba(22, 23, 27, 0.92);
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  opacity: 0;
+}
+
+.bb-block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bb-type-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+}
+
+.bb-badge-pref {
+  background: rgba(201, 154, 87, 0.22);
+  color: #f1d9a8;
+}
+
+.bb-badge-fact {
+  background: rgba(42, 79, 193, 0.22);
+  color: #a8c4f1;
+}
+
+.bb-badge-event {
+  background: rgba(52, 180, 100, 0.18);
+  color: #a8f1c0;
+}
+
+.bb-conf {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: #9d9ea9;
+}
+
+.bb-block-content {
+  margin: 0;
+  color: #eef0f3;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.bb-block-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #6b6d75;
+  font-size: 0.68rem;
+}
+
+.bb-lock-icon {
+  display: flex;
+  align-items: center;
+}
+
+.bb-encrypted-label {
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.04em;
+}
+
+/* Block drop-in keyframes — staggered */
+@keyframes bbDropPref {
+  0%, 34%   { opacity: 0; transform: translateY(-18px) scale(0.95); }
+  40%       { opacity: 1; transform: translateY(0) scale(1); box-shadow: 0 0 20px 2px rgba(201, 154, 87, 0.25); }
+  46%       { box-shadow: none; }
+  90%       { opacity: 1; transform: translateY(0); }
+  96%       { opacity: 0; transform: translateY(0); }
+  100%      { opacity: 0; }
+}
+
+@keyframes bbDropFact {
+  0%, 40%   { opacity: 0; transform: translateY(-18px) scale(0.95); }
+  46%       { opacity: 1; transform: translateY(0) scale(1); box-shadow: 0 0 20px 2px rgba(42, 79, 193, 0.3); }
+  52%       { box-shadow: none; }
+  90%       { opacity: 1; transform: translateY(0); }
+  96%       { opacity: 0; transform: translateY(0); }
+  100%      { opacity: 0; }
+}
+
+@keyframes bbDropEvent {
+  0%, 46%   { opacity: 0; transform: translateY(-18px) scale(0.95); }
+  52%       { opacity: 1; transform: translateY(0) scale(1); box-shadow: 0 0 20px 2px rgba(52, 180, 100, 0.25); }
+  58%       { box-shadow: none; }
+  90%       { opacity: 1; transform: translateY(0); }
+  96%       { opacity: 0; transform: translateY(0); }
+  100%      { opacity: 0; }
+}
+
+.bb-anim[data-phase="block-pref"]  { animation: bbDropPref var(--bb-cycle) ease-out infinite; }
+.bb-anim[data-phase="block-fact"]  { animation: bbDropFact var(--bb-cycle) ease-out infinite; }
+.bb-anim[data-phase="block-event"] { animation: bbDropEvent var(--bb-cycle) ease-out infinite; }
+
+/* ── Graph edges ── */
+.bb-edges {
+  width: 100%;
+  max-width: 480px;
+  height: 40px;
+  margin-top: 0.8rem;
+  opacity: 0;
+}
+
+.bb-edge {
+  stroke: rgba(120, 120, 140, 0.5);
+  stroke-width: 1.5;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  stroke-linecap: round;
+}
+
+.bb-edge-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 7px;
+  fill: #7c8094;
+  text-anchor: middle;
+  letter-spacing: 0.06em;
+}
+
+@keyframes bbEdges {
+  0%, 58%   { opacity: 0; }
+  62%       { opacity: 1; }
+  90%       { opacity: 1; }
+  96%       { opacity: 0; }
+  100%      { opacity: 0; }
+}
+
+@keyframes bbEdgeDraw1 {
+  0%, 58%   { stroke-dashoffset: 100; }
+  68%       { stroke-dashoffset: 0; }
+  90%       { stroke-dashoffset: 0; }
+  96%       { stroke-dashoffset: 100; }
+  100%      { stroke-dashoffset: 100; }
+}
+
+@keyframes bbEdgeDraw2 {
+  0%, 64%   { stroke-dashoffset: 100; }
+  74%       { stroke-dashoffset: 0; }
+  90%       { stroke-dashoffset: 0; }
+  96%       { stroke-dashoffset: 100; }
+  100%      { stroke-dashoffset: 100; }
+}
+
+.bb-anim[data-phase="edges"] {
+  animation: bbEdges var(--bb-cycle) ease-in-out infinite;
+}
+
+.bb-edge-1 { animation: bbEdgeDraw1 var(--bb-cycle) ease-in-out infinite; }
+.bb-edge-2 { animation: bbEdgeDraw2 var(--bb-cycle) ease-in-out infinite; }
+
 /* ─── Documentation Page ─────────────────────────────────────────── */
 
 .docs-main {

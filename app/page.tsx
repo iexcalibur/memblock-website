@@ -4,6 +4,7 @@ import MegaFooter from './components/home/MegaFooter'
 import QuickstartSection from './components/home/QuickstartSection'
 import FeaturesSection from './components/home/ReadinessSection'
 import TopNav from './components/home/TopNav'
+import BlockBuilderSection from './components/home/BlockBuilderSection'
 import WorkflowSection from './components/home/WorkflowSection'
 
 export default function HomePage() {
@@ -14,6 +15,7 @@ export default function HomePage() {
       <main>
         <HeroSection />
         <WorkflowSection />
+        <BlockBuilderSection />
         <FeaturesSection features={features} />
         <QuickstartSection terminalOutput={terminalOutput} />
       </main>
