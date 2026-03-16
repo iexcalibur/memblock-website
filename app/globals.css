@@ -1442,6 +1442,41 @@
   margin-bottom: 3.5rem;
 }
 
+.docs-extras-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.doc-extra-card {
+  background: linear-gradient(156deg, rgba(20, 20, 22, 0.98) 0%, rgba(10, 10, 12, 0.98) 100%);
+  border: 1px solid rgba(46, 47, 55, 0.88);
+  border-radius: 14px;
+  padding: 1.2rem 1.5rem;
+}
+
+.doc-extra-card.doc-extra-all {
+  grid-column: 1 / -1;
+  border-color: rgba(255, 136, 0, 0.3);
+}
+
+.doc-extra-cmd {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.85rem;
+  color: #ff8800;
+  margin: 0 0 0.5rem;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.doc-extra-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
 .docs-section {
   margin-bottom: 4rem;
 }

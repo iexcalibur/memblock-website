@@ -1,17 +1,14 @@
 # MemBlock Website
 
-Landing page for the MemBlock SDK, now built with Next.js.
+Marketing and documentation site for the [MemBlock SDK](https://pypi.org/project/memblock/) — the local-first structured memory SDK for AI agents.
 
-## Run locally with Next.js
+**Live:** [memblock.xyz](https://memblock.xyz)
 
-From the project root:
+## Run locally
 
 ```bash
-cd '/Users/shubham/Desktop/memblock-website'
 npm install
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
-
-# memblock-website

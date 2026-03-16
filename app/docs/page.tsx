@@ -139,6 +139,7 @@ export default function DocsPage() {
             memblock
           </a>
           <nav className="primary-nav" aria-label="Documentation navigation">
+            <a href="#installation" className="nav-link">INSTALL</a>
             <a href="#core" className="nav-link">CORE</a>
             <a href="#graph" className="nav-link">GRAPH</a>
             <a href="#advanced" className="nav-link">ADVANCED</a>
@@ -167,6 +168,39 @@ export default function DocsPage() {
           <div className="docs-install">
             <pre className="doc-code-block">pip install memblock</pre>
           </div>
+
+          <section id="installation" className="docs-section">
+            <h2 className="docs-section-title">Installation Extras</h2>
+            <p className="docs-section-desc">
+              The base install gives you everything for local memory with SQLite. Add optional extras for additional capabilities.
+            </p>
+            <div className="docs-extras-grid">
+              <div className="doc-extra-card">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[postgres]&quot;</pre>
+                <p className="doc-extra-desc">PostgreSQL storage backend for production multi-tenant deployments</p>
+              </div>
+              <div className="doc-extra-card">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[embeddings]&quot;</pre>
+                <p className="doc-extra-desc">Local vector embeddings via FastEmbed — CPU-only, no API key needed</p>
+              </div>
+              <div className="doc-extra-card">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[llm]&quot;</pre>
+                <p className="doc-extra-desc">LLM-powered memory extraction with OpenAI and Anthropic</p>
+              </div>
+              <div className="doc-extra-card">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[reranker-cohere]&quot;</pre>
+                <p className="doc-extra-desc">Cohere-based reranker for improved search relevance</p>
+              </div>
+              <div className="doc-extra-card">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[reranker-cross-encoder]&quot;</pre>
+                <p className="doc-extra-desc">HuggingFace cross-encoder reranker — runs locally</p>
+              </div>
+              <div className="doc-extra-card doc-extra-all">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[all]&quot;</pre>
+                <p className="doc-extra-desc">Everything above — all backends, embeddings, LLM extraction, and rerankers</p>
+              </div>
+            </div>
+          </section>
 
           <section id="core" className="docs-section">
             <h2 className="docs-section-title">Core API</h2>
