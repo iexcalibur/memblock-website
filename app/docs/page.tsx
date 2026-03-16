@@ -85,6 +85,48 @@ const graphMethods: ApiMethod[] = [
   },
 ]
 
+const analyticsMethods: ApiMethod[] = [
+  {
+    name: '.log_question()',
+    signature:
+      'mem.log_question(question, user_id=None, org_id=None)',
+    description:
+      'Log a user question for analytics. Automatically normalizes text, deduplicates, and tracks frequency and unique users. Noise (greetings, short strings) is filtered out and returns None.',
+    returns: 'QuestionRecord | None',
+  },
+  {
+    name: '.get_top_questions()',
+    signature:
+      'mem.get_top_questions(org_id=None, limit=20, since=None, until=None)',
+    description:
+      'Get the most frequently asked questions for an organization, ordered by frequency. Optionally filter by time range.',
+    returns: 'list[QuestionRecord]',
+  },
+  {
+    name: '.get_trending_questions()',
+    signature:
+      'mem.get_trending_questions(org_id=None, window_days=7, limit=10)',
+    description:
+      'Get questions trending upward — compares recent frequency against historical average to surface emerging topics.',
+    returns: 'list[QuestionTrend]',
+  },
+  {
+    name: '.get_question_breakdown()',
+    signature:
+      'mem.get_question_breakdown(question, org_id=None, granularity="daily")',
+    description:
+      'Get a time-series breakdown of how often a specific question was asked. Granularity: "daily", "weekly", or "monthly".',
+    returns: 'dict[str, int]',
+  },
+  {
+    name: '.question_stats()',
+    signature: 'mem.question_stats(org_id=None)',
+    description:
+      'Get aggregate analytics stats: total unique questions, total asks, and the top question with its frequency.',
+    returns: 'dict',
+  },
+]
+
 const advancedMethods: ApiMethod[] = [
   {
     name: '.verify()',
@@ -142,6 +184,7 @@ export default function DocsPage() {
             <a href="#installation" className="nav-link">INSTALL</a>
             <a href="#core" className="nav-link">CORE</a>
             <a href="#graph" className="nav-link">GRAPH</a>
+            <a href="#analytics" className="nav-link">ANALYTICS</a>
             <a href="#advanced" className="nav-link">ADVANCED</a>
             <a href="#types" className="nav-link">TYPES</a>
           </nav>
@@ -226,6 +269,19 @@ export default function DocsPage() {
             </div>
           </section>
 
+          <section id="analytics" className="docs-section">
+            <h2 className="docs-section-title">Org-Level Analytics</h2>
+            <p className="docs-section-desc">
+              Track what questions users are asking across your organization. Deduplicated, frequency-counted,
+              with noise filtering and time-series breakdowns. Opt in with <code>enable_analytics=True</code>.
+            </p>
+            <div className="docs-grid">
+              {analyticsMethods.map((m) => (
+                <MethodCard key={m.name} method={m} />
+              ))}
+            </div>
+          </section>
+
           <section id="advanced" className="docs-section">
             <h2 className="docs-section-title">Advanced</h2>
             <p className="docs-section-desc">
@@ -270,6 +326,40 @@ context = mem.build_context(
     query="user preferences",
     token_budget=2000
 )`}</pre>
+          </section>
+
+          <section className="docs-section docs-quickstart">
+            <h2 className="docs-section-title">Analytics Example</h2>
+            <pre className="doc-code-block">{`from memblock import MemBlock
+
+mem = MemBlock(
+    storage="sqlite:///memory.db",
+    enable_analytics=True,
+    org_id="my_org"
+)
+
+# Log questions from your chatbot users
+mem.log_question("How do I reset my password?", user_id="user_42")
+mem.log_question("How do I reset my password?", user_id="user_88")
+mem.log_question("What is the refund policy?", user_id="user_42")
+
+# See what users are asking most
+top = mem.get_top_questions(limit=10)
+# → [QuestionRecord("how do i reset my password", freq=2, users=2), ...]
+
+# Get trending questions (rising in the last 7 days)
+trending = mem.get_trending_questions(window_days=7)
+
+# Daily breakdown for a specific question
+breakdown = mem.get_question_breakdown(
+    "How do I reset my password?",
+    granularity="daily"
+)
+# → {"2026-03-16": 2}
+
+# Aggregate stats
+stats = mem.question_stats()
+# → {"total_unique_questions": 2, "total_asks": 3, ...}`}</pre>
           </section>
         </div>
       </main>
