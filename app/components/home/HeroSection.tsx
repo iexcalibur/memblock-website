@@ -10,7 +10,7 @@ export default function HeroSection() {
         <h1 className="hero-title">Memory that agents can actually reason over.</h1>
         <a href="#quickstart" className="outline-pill announce-pill">
           <span className="announce-dot" />
-          V0.4.0 — NOW AVAILABLE
+          V0.4.1 — NOW AVAILABLE
         </a>
       </div>
 
