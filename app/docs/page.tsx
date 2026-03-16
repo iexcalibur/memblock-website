@@ -185,11 +185,7 @@ export default function DocsPage() {
               </div>
               <div className="doc-extra-card">
                 <pre className="doc-extra-cmd">pip install &quot;memblock[llm]&quot;</pre>
-                <p className="doc-extra-desc">LLM-powered memory extraction with OpenAI and Anthropic</p>
-              </div>
-              <div className="doc-extra-card">
-                <pre className="doc-extra-cmd">pip install &quot;memblock[llm-gemini]&quot;</pre>
-                <p className="doc-extra-desc">Gemini-powered extraction and conflict resolution via Google GenAI</p>
+                <p className="doc-extra-desc">LLM-powered memory extraction with OpenAI, Anthropic, and Google Gemini</p>
               </div>
               <div className="doc-extra-card">
                 <pre className="doc-extra-cmd">pip install &quot;memblock[reranker-cohere]&quot;</pre>
