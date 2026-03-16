@@ -14,11 +14,19 @@ export default function MegaFooter({ columns }: MegaFooterProps) {
             <div key={column.title}>
               <h3 className="footer-title">{column.title}</h3>
               <ul className="footer-links">
-                {column.links.map((link) => (
-                  <li key={link}>
-                    <a href="#">{link}</a>
-                  </li>
-                ))}
+                {column.links.map((link) => {
+                  const href =
+                    link === 'Documentation' ? '/docs'
+                    : link === 'About' ? '/about'
+                    : link === 'How It Works' ? '#workflow'
+                    : link === 'Features' ? '#features'
+                    : '#'
+                  return (
+                    <li key={link}>
+                      <a href={href}>{link}</a>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           ))}

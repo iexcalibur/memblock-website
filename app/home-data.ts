@@ -10,45 +10,38 @@ export type FooterColumn = {
   links: string[]
 }
 
-export const navItems = ['FEATURES', 'QUICKSTART', 'GITHUB', 'COMPANY']
+export const navItems = ['HOW IT WORKS', 'FEATURES', 'DOCS', 'COMPANY']
 
 export const features: CapabilityItem[] = [
   {
     title: 'Typed Memory Blocks',
-    description:
-      '5 structured types — FACT, PREFERENCE, EVENT, ENTITY, RELATION. Schema-validated, not untyped text blobs.',
+    description: 'Schema-validated, not untyped text blobs.',
     iconPath: 'M4 6h16M4 10h16M4 14h10M4 18h6'
   },
   {
     title: 'Per-Block Encryption',
-    description:
-      'AES-256 with three levels: NONE, STANDARD, SENSITIVE. Encrypt what matters, leave the rest fast.',
+    description: 'Encrypt what matters, leave the rest fast.',
     iconPath: 'M12 2L4 7v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V7l-8-5z'
   },
   {
     title: 'Knowledge Graph',
-    description:
-      'Built-in graph index with link, traverse, and neighbor queries. No Neo4j or external graph DB required.',
+    description: 'Link, traverse, and query — no external graph DB.',
     iconPath: 'M6 6h0M18 6h0M12 18h0M6 6l12 0M6 6l6 12M18 6l-6 12'
   },
   {
     title: 'Memory Decay Engine',
-    description:
-      'Exponential decay with configurable rates. Prune weak memories, surface the strongest automatically.',
+    description: 'Prune weak memories, surface the strongest.',
     iconPath: 'M3 20l4-8 4 4 4-12 4 6'
   },
   {
     title: 'Tamper Detection',
-    description:
-      'SHA-256 hash-chained operation log. One call to verify() catches any unauthorized modification.',
+    description: 'One call catches any unauthorized modification.',
     iconPath: 'M9 12l2 2 4-4M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z'
   },
   {
     title: 'Async + Event Hooks',
-    description:
-      'Full async API via AsyncMemBlock. Lifecycle hooks for on_add, on_update, on_delete, on_query.',
-    iconPath: 'M13 2L3 14h9l-1 8 10-12h-9l1-8',
-    isNew: true
+    description: 'Full async API with lifecycle event hooks.',
+    iconPath: 'M13 2L3 14h9l-1 8 10-12h-9l1-8'
   }
 ]
 
@@ -67,18 +60,14 @@ export const terminalOutput = [
 export const footerColumns: FooterColumn[] = [
   {
     title: 'Platform',
-    links: ['Features', 'Quickstart', 'Roadmap', 'Changelog']
+    links: ['How It Works', 'Features', 'Documentation']
   },
   {
     title: 'Developers',
-    links: ['GitHub', 'PyPI', 'SDK Reference', 'Examples']
-  },
-  {
-    title: 'Security',
-    links: ['Encryption', 'Tamper Detection', 'Access Scoping']
+    links: ['Documentation']
   },
   {
     title: 'Company',
-    links: ['About', 'Contact', 'Legal']
+    links: ['About']
   }
 ]

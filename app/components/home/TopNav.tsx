@@ -14,13 +14,13 @@ export default function TopNav({ navItems, requestDemoHref = '#quickstart' }: To
         <nav className="primary-nav" aria-label="Primary navigation">
           {navItems.map((item) => {
             const href =
-              item === 'GITHUB'
-                ? 'https://github.com/iexcalibur/memblock'
-                : `#${item.toLowerCase()}`
-            const target = item === 'GITHUB' ? '_blank' : undefined
-            const rel = item === 'GITHUB' ? 'noopener noreferrer' : undefined
+              item === 'DOCS'
+                ? '/docs'
+                : item === 'HOW IT WORKS'
+                  ? '#workflow'
+                  : `#${item.toLowerCase()}`
             return (
-              <a key={item} href={href} className="nav-link" target={target} rel={rel}>
+              <a key={item} href={href} className="nav-link">
                 {item}
               </a>
             )

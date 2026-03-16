@@ -13,8 +13,8 @@ export default function QuickstartSection({ terminalOutput }: QuickstartSectionP
             Install from PyPI. Create a MemBlock instance. Store your first memory.
             No API keys, no configuration files, no setup wizard.
           </p>
-          <a href="https://github.com/iexcalibur/memblock" className="outline-pill" target="_blank" rel="noopener noreferrer">
-            VIEW ON GITHUB
+          <a href="/docs" className="outline-pill">
+            VIEW DOCUMENTATION
           </a>
         </div>
 

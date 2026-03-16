@@ -336,6 +336,12 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.36);
 }
 
+.announce-pill:hover,
+.announce-pill:focus-visible {
+  background: var(--pill-white);
+  color: var(--pill-text-dark);
+}
+
 .announce-dot {
   width: 7px;
   height: 7px;
@@ -395,6 +401,384 @@
 .reveal {
   opacity: 0;
   animation: revealUp 450ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms) both;
+}
+
+/* ─── Animated Workflow ───────────────────────────────────────────── */
+
+/*
+  10 steps over 20s cycle. Each step = 2s.
+  Step 0: user msg 1           (0%)
+  Step 1: typing 1             (10%)
+  Step 2: agent msg 1          (20%) — typing 1 hides
+  Step 3: memory 1 appears     (30%)
+  Step 4: memory 2 appears     (40%)
+  Step 5: divider              (50%)
+  Step 6: user msg 2           (60%)
+  Step 7: typing 2 + search    (70%)
+  Step 8: agent msg 2 + recall (80%) — typing 2 hides
+  Step 9: hold                 (90-97%)
+  Reset at 100%
+*/
+
+@keyframes wfAppear {
+  0%, var(--in) { opacity: 0; transform: translateY(14px); }
+  var(--show) { opacity: 1; transform: translateY(0); }
+}
+
+/* Dot pulse for typing indicators */
+@keyframes wfDotPulse {
+  0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+/* Search bar pulse */
+@keyframes wfSearchPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Glow burst on memory card appearance */
+@keyframes wfGlow3 {
+  0%,29% { box-shadow: none; } 32% { box-shadow: 0 0 18px 2px rgba(42,79,193,0.35); }
+  38% { box-shadow: none; } 100% { box-shadow: none; }
+}
+@keyframes wfGlow4 {
+  0%,39% { box-shadow: none; } 42% { box-shadow: 0 0 18px 2px rgba(42,79,193,0.35); }
+  48% { box-shadow: none; } 100% { box-shadow: none; }
+}
+
+/* ── Per-step looping keyframes ──
+   Each step = 10% of the 20s cycle.
+   Regular elements: appear at step%, stay until 93%, fade by 97%.
+   Typing indicators: appear at step%, disappear at next step%.
+   Empty state: visible at start, disappears at step 3 (30%). */
+
+@keyframes wfS0 {
+  0% { opacity:0; transform:translateY(12px); }
+  3% { opacity:1; transform:translateY(0); }
+  93% { opacity:1; transform:translateY(0); }
+  97% { opacity:0; transform:translateY(0); }
+  100% { opacity:0; }
+}
+@keyframes wfS2 {
+  0%,19% { opacity:0; transform:translateY(12px); }
+  22% { opacity:1; transform:translateY(0); }
+  93% { opacity:1; } 97% { opacity:0; } 100% { opacity:0; }
+}
+@keyframes wfS3 {
+  0%,29% { opacity:0; transform:translateY(12px); }
+  32% { opacity:1; transform:translateY(0); }
+  93% { opacity:1; } 97% { opacity:0; } 100% { opacity:0; }
+}
+@keyframes wfS4 {
+  0%,39% { opacity:0; transform:translateY(12px); }
+  42% { opacity:1; transform:translateY(0); }
+  93% { opacity:1; } 97% { opacity:0; } 100% { opacity:0; }
+}
+@keyframes wfS5 {
+  0%,49% { opacity:0; transform:translateY(12px); }
+  52% { opacity:1; transform:translateY(0); }
+  93% { opacity:1; } 97% { opacity:0; } 100% { opacity:0; }
+}
+@keyframes wfS6 {
+  0%,59% { opacity:0; transform:translateY(12px); }
+  62% { opacity:1; transform:translateY(0); }
+  93% { opacity:1; } 97% { opacity:0; } 100% { opacity:0; }
+}
+@keyframes wfS7 {
+  0%,69% { opacity:0; transform:translateY(12px); }
+  72% { opacity:1; transform:translateY(0); }
+  93% { opacity:1; } 97% { opacity:0; } 100% { opacity:0; }
+}
+@keyframes wfS8 {
+  0%,79% { opacity:0; transform:translateY(12px); }
+  82% { opacity:1; transform:translateY(0); }
+  93% { opacity:1; } 97% { opacity:0; } 100% { opacity:0; }
+}
+
+/* Typing step 1: visible 10%–20%, then collapses */
+@keyframes wfT1 {
+  0%,9% { opacity:0; max-height:0; overflow:hidden; margin-bottom:0; padding:0; }
+  12% { opacity:1; max-height:50px; margin-bottom:0.65rem; padding:0.7rem 1rem; }
+  18% { opacity:1; max-height:50px; margin-bottom:0.65rem; padding:0.7rem 1rem; }
+  21% { opacity:0; max-height:0; overflow:hidden; margin-bottom:0; padding:0; }
+  100% { opacity:0; max-height:0; overflow:hidden; margin-bottom:0; padding:0; }
+}
+
+/* Typing step 7: visible 70%–80%, then collapses */
+@keyframes wfT7 {
+  0%,69% { opacity:0; max-height:0; overflow:hidden; margin-bottom:0; padding:0; }
+  72% { opacity:1; max-height:50px; margin-bottom:0.65rem; padding:0.7rem 1rem; }
+  78% { opacity:1; max-height:50px; margin-bottom:0.65rem; padding:0.7rem 1rem; }
+  81% { opacity:0; max-height:0; overflow:hidden; margin-bottom:0; padding:0; }
+  100% { opacity:0; max-height:0; overflow:hidden; margin-bottom:0; padding:0; }
+}
+
+/* Empty state: visible 0%–28%, collapses before memory cards arrive at 30% */
+@keyframes wfE0 {
+  0% { opacity:1; max-height:80px; padding:1.2rem 0.8rem; }
+  28% { opacity:1; max-height:80px; padding:1.2rem 0.8rem; }
+  32% { opacity:0; max-height:0; padding:0; overflow:hidden; }
+  100% { opacity:0; max-height:0; padding:0; overflow:hidden; }
+}
+
+.wf-container {
+  --cycle: 20s;
+  --step-dur: calc(var(--cycle) / 10);
+  margin-top: 2.2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+  border: 1px solid rgba(46, 47, 55, 0.88);
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(16, 16, 18, 0.98) 0%, rgba(10, 10, 12, 0.98) 100%);
+  padding: clamp(16px, 2vw, 28px);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .wf-container {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 1.6rem;
+  }
+}
+
+/* Chat column */
+.wf-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.wf-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(46, 47, 55, 0.6);
+}
+
+.wf-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.wf-dot-green {
+  background: #34c759;
+  box-shadow: 0 0 6px rgba(52, 199, 89, 0.5);
+}
+
+.wf-chat-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Animated elements — base state hidden, per-step keyframes loop infinitely */
+.wf-anim { opacity: 0; }
+
+.wf-anim[data-step="0"] { animation: wfS0 var(--cycle) linear infinite; }
+.wf-anim[data-step="2"] { animation: wfS2 var(--cycle) linear infinite; }
+.wf-anim[data-step="3"] { animation: wfS3 var(--cycle) linear infinite, wfGlow3 var(--cycle) linear infinite; }
+.wf-anim[data-step="4"] { animation: wfS4 var(--cycle) linear infinite, wfGlow4 var(--cycle) linear infinite; }
+.wf-anim[data-step="5"] { animation: wfS5 var(--cycle) linear infinite; }
+.wf-anim[data-step="6"] { animation: wfS6 var(--cycle) linear infinite; }
+.wf-anim[data-step="7"] { animation: wfS7 var(--cycle) linear infinite; }
+.wf-anim[data-step="8"] { animation: wfS8 var(--cycle) linear infinite; }
+
+/* Typing indicators: appear then collapse before agent reply */
+.wf-anim[data-step="t1"] { animation: wfT1 var(--cycle) linear infinite; }
+.wf-anim[data-step="t7"] { animation: wfT7 var(--cycle) linear infinite; }
+
+/* Empty state: visible at start, collapses when memories arrive */
+.wf-anim[data-step="e0"] { opacity: 1; animation: wfE0 var(--cycle) linear infinite; }
+
+/* Chat bubbles */
+.wf-bubble {
+  border-radius: 16px;
+  padding: 0.85rem 1.1rem;
+  font-size: clamp(0.9rem, 1.25vw, 1rem);
+  line-height: 1.5;
+  margin-bottom: 0.65rem;
+}
+
+.wf-user {
+  background: rgba(53, 56, 65, 0.56);
+  color: #eef0f4;
+  margin-left: auto;
+  max-width: 88%;
+  border-bottom-right-radius: 4px;
+}
+
+.wf-agent {
+  background: rgba(42, 79, 193, 0.14);
+  border: 1px solid rgba(42, 79, 193, 0.22);
+  color: #dde0e8;
+  max-width: 88%;
+  border-bottom-left-radius: 4px;
+}
+
+/* Typing indicator — padding/margin controlled by keyframe */
+.wf-typing {
+  display: flex;
+  gap: 5px;
+  max-width: 70px;
+  overflow: hidden;
+}
+
+.wf-typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7c8094;
+  animation: wfDotPulse 1.2s ease-in-out infinite;
+}
+
+.wf-typing span:nth-child(2) { animation-delay: 0.15s; }
+.wf-typing span:nth-child(3) { animation-delay: 0.3s; }
+
+/* Time divider */
+.wf-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.6rem 0 0.8rem;
+}
+
+.wf-divider-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(77, 82, 94, 0.4);
+}
+
+.wf-divider-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Memory column */
+.wf-memory {
+  border: 1px solid rgba(48, 50, 58, 0.88);
+  border-radius: 14px;
+  background: linear-gradient(165deg, rgba(22, 24, 28, 0.96) 0%, rgba(18, 19, 22, 0.96) 100%);
+  padding: clamp(14px, 1.6vw, 22px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-self: start;
+}
+
+.wf-memory-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(46, 47, 55, 0.6);
+  color: var(--accent-gold);
+}
+
+.wf-memory-header span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Empty state — animation controlled by data-step="e0" selector */
+.wf-mem-empty {
+  text-align: center;
+  overflow: hidden;
+}
+
+.wf-mem-empty p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  font-style: italic;
+}
+
+/* Memory cards */
+.wf-mem-card {
+  border: 1px solid rgba(49, 51, 58, 0.84);
+  border-radius: 10px;
+  background: rgba(35, 37, 44, 0.6);
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* Glow handled by per-step keyframes (wfGlow3, wfGlow4) */
+
+.wf-mem-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.wf-mem-type {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #e9edff;
+  background: #2a4fc1;
+  padding: 0.22rem 0.48rem;
+  border-radius: 5px;
+}
+
+.wf-mem-conf {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.7rem;
+  color: #9d9ea9;
+}
+
+.wf-mem-text {
+  margin: 0;
+  color: #eef0f3;
+  font-size: 0.86rem;
+  line-height: 1.4;
+}
+
+/* Search indicator */
+.wf-mem-search {
+  margin: 0.2rem 0;
+}
+
+.wf-mem-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  background: rgba(42, 79, 193, 0.1);
+  border: 1px solid rgba(42, 79, 193, 0.25);
+  color: #8ba0d4;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  animation: wfSearchPulse 1.5s ease-in-out infinite;
+}
+
+/* Recalled card */
+.wf-mem-recalled {
+  border-color: rgba(42, 79, 193, 0.5);
+  background: rgba(42, 79, 193, 0.1);
+}
+
+.wf-recalled-badge {
+  color: #7ba4f7;
+  font-weight: 600;
 }
 
 .memory-workflow {
@@ -1042,6 +1426,163 @@
   }
 }
 
+/* ─── Documentation Page ─────────────────────────────────────────── */
+
+.docs-main {
+  padding-top: 120px;
+  padding-bottom: 80px;
+  min-height: 100vh;
+}
+
+.docs-hero {
+  margin-bottom: 3rem;
+}
+
+.docs-install {
+  margin-bottom: 3.5rem;
+}
+
+.docs-section {
+  margin-bottom: 4rem;
+}
+
+.docs-section-title {
+  font-family: 'Space Grotesk', 'Trebuchet MS', sans-serif;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem;
+}
+
+.docs-section-desc {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1.8rem;
+  max-width: 640px;
+}
+
+.docs-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .docs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .docs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.doc-method {
+  border: 1px solid rgba(46, 47, 55, 0.88);
+  border-radius: 16px;
+  background: linear-gradient(156deg, rgba(20, 20, 22, 0.96) 0%, rgba(13, 13, 15, 0.96) 100%);
+  padding: 1.4rem;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.doc-method:hover {
+  border-color: var(--line-active);
+  transform: translateY(-2px);
+}
+
+.doc-method-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin: 0 0 0.75rem;
+}
+
+.doc-method-sig {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #a8aab2;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  margin: 0 0 0.9rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.doc-method-desc {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin: 0 0 0.7rem;
+}
+
+.doc-method-returns {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.doc-returns-label {
+  font-family: 'IBM Plex Mono', monospace;
+  color: #7c8094;
+  font-size: 0.78rem;
+}
+
+.doc-code-block {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #e8eaf0;
+  background: linear-gradient(156deg, rgba(20, 20, 22, 0.98) 0%, rgba(10, 10, 12, 0.98) 100%);
+  border: 1px solid rgba(46, 47, 55, 0.88);
+  border-radius: 14px;
+  padding: 1.2rem 1.5rem;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.docs-types-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.doc-type-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border: 1px solid rgba(46, 47, 55, 0.88);
+  border-radius: 12px;
+  background: rgba(20, 20, 22, 0.8);
+  padding: 1rem 1.2rem;
+  min-width: 180px;
+  flex: 1;
+}
+
+.doc-type-name {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+}
+
+.doc-type-desc {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.docs-quickstart {
+  margin-top: 2rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .memory-frame {
     animation: none;
@@ -1065,4 +1606,60 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ─── About Page ────────────────────────────────────────────────── */
+
+.about-main {
+  padding-top: 120px;
+  padding-bottom: 80px;
+  min-height: 100vh;
+  max-width: 720px;
+  margin: 0 auto;
+  padding-inline: 1.5rem;
+}
+
+.about-hero {
+  margin-bottom: 3.5rem;
+}
+
+.about-title {
+  font-family: 'Space Grotesk', 'Trebuchet MS', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 0.75rem 0 0;
+  line-height: 1.15;
+}
+
+.about-section {
+  margin-bottom: 3rem;
+}
+
+.about-heading {
+  font-family: 'Space Grotesk', 'Trebuchet MS', sans-serif;
+  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--accent-gold);
+  margin: 0 0 1rem;
+}
+
+.about-text {
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+}
+
+.about-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
 }
