@@ -151,6 +151,47 @@ const advancedMethods: ApiMethod[] = [
   },
 ]
 
+const productionMethods: ApiMethod[] = [
+  {
+    name: 'MemBlockPool()',
+    signature:
+      'MemBlockPool(storage, max_instances=100, **shared_kwargs)',
+    description:
+      'LRU-cached instance factory for multi-tenant deployments. Creates and caches per-user MemBlock instances. Evicts least-recently-used when exceeding max_instances. Use as a context manager.',
+    returns: 'MemBlockPool instance',
+  },
+  {
+    name: 'pool.get()',
+    signature: 'pool.get(user_id, **overrides)',
+    description:
+      'Get or create a MemBlock instance for a user. Returns cached instance if available, creates new one otherwise. LRU eviction keeps memory bounded.',
+    returns: 'MemBlock',
+  },
+  {
+    name: 'AsyncMemBlockPool()',
+    signature:
+      'AsyncMemBlockPool(storage, max_instances=100, **shared_kwargs)',
+    description:
+      'Async wrapper around MemBlockPool. Returns AsyncMemBlock instances via await pool.get(). Use as an async context manager with FastAPI or aiohttp.',
+    returns: 'AsyncMemBlockPool instance',
+  },
+  {
+    name: 'Connection Pooling',
+    signature:
+      'MemBlock(storage="postgresql://...", user_id="u_123", pool=connection_pool)',
+    description:
+      'Pass a psycopg_pool.ConnectionPool to share connections across requests. Connections are borrowed on use and returned on close() — no per-request connection overhead.',
+    returns: 'MemBlock instance (pooled)',
+  },
+  {
+    name: 'pgvector Search',
+    signature: 'pip install "memblock[pgvector]"',
+    description:
+      'When the pgvector PostgreSQL extension is installed, MemBlock auto-detects it and uses server-side HNSW vector search instead of brute-force Python cosine. Dual-write to BYTEA + vector column ensures backward compatibility. No code changes needed.',
+    returns: 'Automatic — transparent upgrade',
+  },
+]
+
 const blockTypes = [
   { name: 'FACT', description: 'Objective information or knowledge' },
   { name: 'PREFERENCE', description: 'User likes, dislikes, or choices' },
@@ -186,6 +227,7 @@ export default function DocsPage() {
             <a href="#graph" className="nav-link">GRAPH</a>
             <a href="#analytics" className="nav-link">ANALYTICS</a>
             <a href="#advanced" className="nav-link">ADVANCED</a>
+            <a href="#production" className="nav-link">PRODUCTION</a>
             <a href="#types" className="nav-link">TYPES</a>
           </nav>
           <div className="nav-right">
@@ -238,9 +280,17 @@ export default function DocsPage() {
                 <pre className="doc-extra-cmd">pip install &quot;memblock[reranker-cross-encoder]&quot;</pre>
                 <p className="doc-extra-desc">HuggingFace cross-encoder reranker — runs locally</p>
               </div>
+              <div className="doc-extra-card">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[pool]&quot;</pre>
+                <p className="doc-extra-desc">Connection pooling via psycopg_pool for production PostgreSQL deployments</p>
+              </div>
+              <div className="doc-extra-card">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[pgvector]&quot;</pre>
+                <p className="doc-extra-desc">Server-side HNSW vector search via pgvector — replaces brute-force cosine</p>
+              </div>
               <div className="doc-extra-card doc-extra-all">
                 <pre className="doc-extra-cmd">pip install &quot;memblock[all]&quot;</pre>
-                <p className="doc-extra-desc">Everything above — all backends, embeddings, LLM extraction, and rerankers</p>
+                <p className="doc-extra-desc">Everything above — all backends, embeddings, LLM extraction, rerankers, pooling, and pgvector</p>
               </div>
             </div>
           </section>
@@ -289,6 +339,18 @@ export default function DocsPage() {
             </p>
             <div className="docs-grid">
               {advancedMethods.map((m) => (
+                <MethodCard key={m.name} method={m} />
+              ))}
+            </div>
+          </section>
+
+          <section id="production" className="docs-section">
+            <h2 className="docs-section-title">Production</h2>
+            <p className="docs-section-desc">
+              Connection pooling, per-user instance caching, and server-side vector search for multi-tenant deployments.
+            </p>
+            <div className="docs-grid">
+              {productionMethods.map((m) => (
                 <MethodCard key={m.name} method={m} />
               ))}
             </div>
@@ -360,6 +422,41 @@ breakdown = mem.get_question_breakdown(
 # Aggregate stats
 stats = mem.question_stats()
 # → {"total_unique_questions": 2, "total_asks": 3, ...}`}</pre>
+          </section>
+
+          <section className="docs-section docs-quickstart">
+            <h2 className="docs-section-title">Production Example</h2>
+            <pre className="doc-code-block">{`from psycopg_pool import ConnectionPool
+from memblock import MemBlockPool, AsyncMemBlockPool, BlockType
+
+# Connection pooling + instance factory
+pg_pool = ConnectionPool(
+    "postgresql://user:pass@localhost/mydb",
+    min_size=4, max_size=20
+)
+
+# Sync — each user gets a cached MemBlock instance
+with MemBlockPool(
+    "postgresql://user:pass@localhost/mydb",
+    max_instances=100,
+    pool=pg_pool,
+) as pool:
+    mem = pool.get("user_123")
+    mem.store("Prefers dark mode", type=BlockType.PREFERENCE)
+
+# Async — works with FastAPI / aiohttp
+async with AsyncMemBlockPool(
+    "postgresql://user:pass@localhost/mydb",
+    max_instances=100,
+    pool=pg_pool,
+) as pool:
+    mem = await pool.get("user_456")
+    await mem.store("Works at Acme", type=BlockType.FACT)
+
+# pgvector is automatic — just install the extra
+# pip install "memblock[pgvector]"
+# If pgvector extension exists in your DB, vector
+# search uses server-side HNSW instead of Python cosine`}</pre>
           </section>
         </div>
       </main>
