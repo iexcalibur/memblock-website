@@ -289,8 +289,12 @@ export default function DocsPage() {
                 <p className="doc-extra-desc">Server-side HNSW vector search via pgvector — replaces brute-force cosine</p>
               </div>
               <div className="doc-extra-card doc-extra-all">
+                <pre className="doc-extra-cmd">pip install &quot;memblock[all-cloud]&quot;</pre>
+                <p className="doc-extra-desc">All cloud backends, cloud embeddings (OpenAI, Gemini), LLM extraction, Cohere reranker, pooling, and pgvector — works on Python 3.13+</p>
+              </div>
+              <div className="doc-extra-card doc-extra-all">
                 <pre className="doc-extra-cmd">pip install &quot;memblock[all]&quot;</pre>
-                <p className="doc-extra-desc">Everything above — all backends, embeddings, LLM extraction, rerankers, pooling, and pgvector</p>
+                <p className="doc-extra-desc">Everything including local FastEmbed &amp; cross-encoder reranker — requires Python ≤ 3.12 (onnxruntime dependency)</p>
               </div>
             </div>
           </section>
