@@ -208,20 +208,6 @@ export default function BenchmarkPage() {
             </div>
           </section>
 
-          {/* CTA */}
-          <section className="docs-section" style={{ textAlign: 'center', borderTop: '1px solid var(--line-subtle)', paddingTop: '3rem' }}>
-            <h2 className="docs-section-title" style={{ textAlign: 'center' }}>Try MemBlock</h2>
-            <p className="section-copy" style={{ textAlign: 'center' }}>
-              Three lines of Python to get started. No API keys, no setup wizard.
-            </p>
-            <pre className="doc-code-block" style={{ maxWidth: '480px', margin: '1.5rem auto 0' }}>
-              pip install memblock
-            </pre>
-            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-              <a href="/docs" className="outline-pill">DOCUMENTATION</a>
-              <a href="/" className="outline-pill">HOME</a>
-            </div>
-          </section>
         </div>
       </main>
 
