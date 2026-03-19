@@ -13,8 +13,8 @@ export default function FeaturesSection({ features }: FeaturesSectionProps) {
         <p className="micro-label">Core Capabilities</p>
         <h2 className="section-title reveal">Everything an agent needs to remember</h2>
         <p className="section-copy">
-          Nine core primitives that give your AI agents structured, searchable, and secure
-          long-term memory — now with temporal reasoning and multi-hop retrieval.
+          Every primitive your AI agent needs for structured, searchable, and secure
+          long-term memory.
         </p>
 
         <div className="card-grid">
