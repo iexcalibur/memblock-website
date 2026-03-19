@@ -32,14 +32,14 @@ const productionFeatures = [
     icon: 'M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3',
   },
   {
-    title: 'SHA-256 Audit Trail',
-    description: 'Hash-chained operation log for every create, update, delete, link, and unlink.',
-    icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
+    title: 'Hybrid Vector Search',
+    description: 'Local FastEmbed, OpenAI, or Gemini embeddings with RRF-merged full-text + semantic retrieval.',
+    icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.35-4.35',
   },
   {
-    title: 'Schema Migrations',
-    description: 'Automatic schema evolution across versions. Zero-downtime upgrades for SQLite and PostgreSQL.',
-    icon: 'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z',
+    title: 'Tiered Licensing',
+    description: 'HMAC-signed offline license keys with community and pro tiers. No phone-home required.',
+    icon: 'M9 12l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
   },
   {
     title: 'Content Deduplication',
