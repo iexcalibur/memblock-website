@@ -674,6 +674,7 @@
   flex-direction: column;
   gap: 0.6rem;
   align-self: start;
+  min-height: 380px;
 }
 
 .wf-memory-header {
