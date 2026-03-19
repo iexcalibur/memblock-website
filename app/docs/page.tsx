@@ -24,9 +24,9 @@ const coreMethods: ApiMethod[] = [
   {
     name: '.store()',
     signature:
-      'mem.store(content, type=BlockType.FACT, confidence=1.0, tags=None, encryption_level=EncryptionLevel.NONE)',
+      'mem.store(content, type=BlockType.FACT, confidence=1.0, tags=None, encryption_level=EncryptionLevel.NONE, happened_at=None, temporal_precision="exact")',
     description:
-      'Store a new memory block. Supports 5 types: FACT, PREFERENCE, EVENT, ENTITY, RELATION. Optionally encrypt at STANDARD or SENSITIVE level.',
+      'Store a new memory block. Supports 5 types: FACT, PREFERENCE, EVENT, ENTITY, RELATION. Optionally set happened_at for temporal anchoring and encrypt at STANDARD or SENSITIVE level.',
     returns: 'Block',
   },
   {
@@ -42,8 +42,24 @@ const coreMethods: ApiMethod[] = [
     signature:
       'mem.build_context(query=None, token_budget=4000, strategy="relevance")',
     description:
-      'Build an LLM-ready context string from relevant memory. Strategies: relevance, graph_walk, type_grouped. Fits within your token budget.',
+      'Build an LLM-ready context string from relevant memory. Strategies: relevance, graph_walk, type_grouped, adaptive. The new adaptive strategy combines relevance + graph expansion + deduplication.',
     returns: 'str',
+  },
+  {
+    name: '.build_context_with_confidence()',
+    signature:
+      'mem.build_context_with_confidence(query=None, token_budget=4000, strategy="relevance", evidence_threshold=0.3)',
+    description:
+      'Build context with confidence metadata for adversarial robustness. Returns a tuple of (context_string, ContextConfidence). When evidence is below threshold, signals that the question may be unanswerable.',
+    returns: '(str, ContextConfidence)',
+  },
+  {
+    name: '.multi_hop_query()',
+    signature:
+      'mem.multi_hop_query(text_search, limit=10)',
+    description:
+      'Multi-hop iterative retrieval for complex reasoning. Performs 3 passes: hybrid search, entity extraction + focused queries, and graph walk with proximity boosting. Best for questions connecting multiple facts.',
+    returns: 'list[Block]',
   },
   {
     name: '.update()',
@@ -426,6 +442,38 @@ breakdown = mem.get_question_breakdown(
 # Aggregate stats
 stats = mem.question_stats()
 # → {"total_unique_questions": 2, "total_asks": 3, ...}`}</pre>
+          </section>
+
+          <section className="docs-section docs-quickstart">
+            <h2 className="docs-section-title">Temporal + Multi-Hop Example</h2>
+            <pre className="doc-code-block">{`from memblock import MemBlock, BlockType
+from datetime import datetime, timezone
+
+mem = MemBlock(storage="sqlite:///memory.db")
+
+# Store events with temporal anchoring
+mem.store(
+    "User deployed v2.0 to production",
+    type=BlockType.EVENT,
+    happened_at=datetime(2024, 3, 10, tzinfo=timezone.utc),
+    temporal_precision="day",
+    tags=["deploy", "v2"]
+)
+
+# Temporal queries are parsed automatically
+results = mem.query(text_search="What happened last March?")
+
+# Multi-hop retrieval for complex questions
+results = mem.multi_hop_query("Who recommended the restaurant?")
+
+# Adaptive context with confidence gating
+context, confidence = mem.build_context_with_confidence(
+    query="user preferences",
+    strategy="adaptive",
+    evidence_threshold=0.3
+)
+if not confidence.sufficient_evidence:
+    print("Not enough information to answer")`}</pre>
           </section>
 
           <section className="docs-section docs-quickstart">
