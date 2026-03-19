@@ -31,21 +31,6 @@ const productionFeatures = [
     description: 'LLM-powered decisions — automatically add, update, or remove contradicting memories.',
     icon: 'M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3',
   },
-  {
-    title: 'Hybrid Vector Search',
-    description: 'Local FastEmbed, OpenAI, or Gemini embeddings with RRF-merged full-text + semantic retrieval.',
-    icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.35-4.35',
-  },
-  {
-    title: 'Tiered Licensing',
-    description: 'HMAC-signed offline license keys with community and pro tiers. No phone-home required.',
-    icon: 'M9 12l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
-  },
-  {
-    title: 'Content Deduplication',
-    description: 'Exact hash + semantic similarity dedup with configurable policies: skip, merge, or error.',
-    icon: 'M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h1m16 0a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1M8 3h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z',
-  },
 ]
 
 export default function ProductionSection() {
