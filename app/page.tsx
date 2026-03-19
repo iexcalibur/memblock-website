@@ -1,4 +1,4 @@
-import { features, footerColumns, navItems, terminalOutput } from './home-data'
+import { features, footerColumns, navItems } from './home-data'
 import HeroSection from './components/home/HeroSection'
 import MegaFooter from './components/home/MegaFooter'
 import QuickstartSection from './components/home/QuickstartSection'
@@ -21,7 +21,7 @@ export default function HomePage() {
         <FeaturesSection features={features} />
         <UseCasesSection />
         <BenchmarkSection />
-        <QuickstartSection terminalOutput={terminalOutput} />
+        <QuickstartSection />
       </main>
 
       <MegaFooter columns={footerColumns} />
