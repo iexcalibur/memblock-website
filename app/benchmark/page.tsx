@@ -24,7 +24,7 @@ const benchData: BenchRow[] = [
 ]
 
 const competitors = [
-  { key: 'memblock' as const, label: 'MemBlock', color: '#f1d9a8' },
+  { key: 'memblock' as const, label: 'MemBlock', color: 'var(--accent)' },
   { key: 'mem0' as const, label: 'mem0', color: '#6b6d75' },
   { key: 'memobase' as const, label: 'Memobase', color: '#4a7c6f' },
   { key: 'zep' as const, label: 'Zep', color: '#7c5a8e' },
@@ -49,33 +49,32 @@ const methodology = [
   },
 ]
 
-function BarChart({ data, competitors: comps }: { data: BenchRow[]; competitors: typeof competitors }) {
+function VerticalBarGroup({ row }: { row: BenchRow }) {
+  const maxVal = 100
   return (
-    <div className="bm-chart">
-      {data.map((row) => (
-        <div key={row.category} className="bm-chart-group">
-          <span className="bm-chart-cat">{row.category}</span>
-          <div className="bm-chart-bars">
-            {comps.map((c) => {
-              const val = row[c.key]
-              const isMemblock = c.key === 'memblock'
-              return (
-                <div key={c.key} className="bm-bar-wrap">
-                  <div
-                    className={`bm-bar ${isMemblock ? 'bm-bar-ours' : ''}`}
-                    style={{
-                      width: `${val}%`,
-                      background: c.color,
-                    }}
-                  >
-                    <span className="bm-bar-val">{val}</span>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      ))}
+    <div className="vb-group">
+      <div className="vb-bars">
+        {competitors.map((c) => {
+          const val = row[c.key]
+          const isOurs = c.key === 'memblock'
+          const height = `${(val / maxVal) * 100}%`
+          const opacity = isOurs ? 1 : 0.35 + (val / maxVal) * 0.45
+          return (
+            <div key={c.key} className="vb-col">
+              <span className={`vb-val ${isOurs ? 'vb-val-ours' : ''}`}>{val}</span>
+              <div
+                className={`vb-bar ${isOurs ? 'vb-bar-ours' : ''}`}
+                style={{
+                  height,
+                  background: c.color,
+                  opacity: isOurs ? 1 : opacity,
+                }}
+              />
+            </div>
+          )
+        })}
+      </div>
+      <span className="vb-cat">{row.category}</span>
     </div>
   )
 }
@@ -88,6 +87,11 @@ export default function BenchmarkPage() {
           <a href="/" className="brand" aria-label="Memblock home">
             memblock
           </a>
+          <nav className="primary-nav" aria-label="Benchmark navigation">
+            <a href="#results" className="nav-link">RESULTS</a>
+            <a href="#comparison" className="nav-link">COMPARISON</a>
+            <a href="#methodology" className="nav-link">METHODOLOGY</a>
+          </nav>
           <div className="nav-right">
             <a href="/" className="outline-pill nav-pill">
               HOME
@@ -96,20 +100,20 @@ export default function BenchmarkPage() {
         </div>
       </header>
 
-      <main className="bm-main">
+      <main className="docs-main">
         <div className="content-shell">
-          {/* Hero */}
-          <div className="bm-hero">
+          {/* Hero — same pattern as docs */}
+          <div className="docs-hero">
             <p className="micro-label">[ LoCoMo Benchmark ]</p>
             <h1
               className="hero-title"
-              style={{ fontSize: 'clamp(2rem, 4.5vw, 3.4rem)' }}
+              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
             >
-              MemBlock achieves 92% accuracy on the LoCoMo benchmark
+              MemBlock Benchmark Results
             </h1>
-            <p className="section-copy" style={{ maxWidth: '640px' }}>
-              State-of-the-art results across all reasoning categories on the LoCoMo
-              long-conversation memory dataset, matching or exceeding dedicated memory frameworks.
+            <p className="section-copy">
+              92% overall accuracy on the LoCoMo long-conversation memory dataset,
+              matching or exceeding dedicated memory frameworks.
             </p>
           </div>
 
@@ -126,29 +130,36 @@ export default function BenchmarkPage() {
             ))}
           </div>
 
-          {/* Chart section */}
-          <section className="bm-section">
-            <h2 className="bm-section-title">Results by Category</h2>
-            <p className="bm-section-desc">
-              Horizontal bars show accuracy (%) for each system across LoCoMo categories.
+          {/* Vertical bar chart */}
+          <section id="results" className="docs-section">
+            <h2 className="docs-section-title">Results by Category</h2>
+            <p className="docs-section-desc" style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+              Vertical bars show accuracy (%) for each system. MemBlock highlighted, others dimmed relative to score.
             </p>
 
             {/* Legend */}
             <div className="bm-legend">
               {competitors.map((c) => (
                 <div key={c.key} className="bm-legend-item">
-                  <span className="bm-legend-dot" style={{ background: c.color }} />
+                  <span
+                    className="bm-legend-dot"
+                    style={{ background: c.color, opacity: c.key === 'memblock' ? 1 : 0.6 }}
+                  />
                   <span className="bm-legend-label">{c.label}</span>
                 </div>
               ))}
             </div>
 
-            <BarChart data={benchData} competitors={competitors} />
+            <div className="vb-chart">
+              {benchData.map((row) => (
+                <VerticalBarGroup key={row.category} row={row} />
+              ))}
+            </div>
           </section>
 
           {/* Comparison table */}
-          <section className="bm-section">
-            <h2 className="bm-section-title">Full Comparison</h2>
+          <section id="comparison" className="docs-section">
+            <h2 className="docs-section-title">Full Comparison</h2>
             <div className="bm-table-wrap">
               <table className="bm-table">
                 <thead>
@@ -185,8 +196,8 @@ export default function BenchmarkPage() {
           </section>
 
           {/* Methodology */}
-          <section className="bm-section">
-            <h2 className="bm-section-title">Methodology</h2>
+          <section id="methodology" className="docs-section">
+            <h2 className="docs-section-title">Methodology</h2>
             <div className="bm-method-grid">
               {methodology.map((m) => (
                 <div key={m.title} className="bm-method-card">
@@ -198,9 +209,9 @@ export default function BenchmarkPage() {
           </section>
 
           {/* CTA */}
-          <section className="bm-section bm-cta">
-            <h2 className="bm-section-title">Try MemBlock</h2>
-            <p className="section-copy">
+          <section className="docs-section" style={{ textAlign: 'center', borderTop: '1px solid var(--line-subtle)', paddingTop: '3rem' }}>
+            <h2 className="docs-section-title" style={{ textAlign: 'center' }}>Try MemBlock</h2>
+            <p className="section-copy" style={{ textAlign: 'center' }}>
               Three lines of Python to get started. No API keys, no setup wizard.
             </p>
             <pre className="doc-code-block" style={{ maxWidth: '480px', margin: '1.5rem auto 0' }}>
