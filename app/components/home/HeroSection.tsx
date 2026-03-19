@@ -7,7 +7,7 @@ export default function HeroSection() {
 
       <div className="content-shell hero-shell">
         <p className="micro-label">[ STRUCTURED MEMORY SDK FOR AI AGENTS ]</p>
-        <h1 className="hero-title">Give your AI a memory and personality.</h1>
+        <h1 className="hero-title">Memory that agents can actually reason over.</h1>
         <a href="#quickstart" className="outline-pill announce-pill">
           <span className="announce-dot" />
           V0.7.0 — NOW AVAILABLE
