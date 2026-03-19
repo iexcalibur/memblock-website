@@ -24,7 +24,7 @@ const benchData: BenchRow[] = [
 ]
 
 const competitors = [
-  { key: 'memblock' as const, label: 'MemBlock', color: 'var(--accent)' },
+  { key: 'memblock' as const, label: 'MemBlock', color: 'var(--gold-1)' },
   { key: 'mem0' as const, label: 'mem0', color: '#6b6d75' },
   { key: 'memobase' as const, label: 'Memobase', color: '#4a7c6f' },
   { key: 'zep' as const, label: 'Zep', color: '#7c5a8e' },

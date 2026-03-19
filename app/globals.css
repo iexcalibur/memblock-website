@@ -2048,7 +2048,7 @@
 .bench-value {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
-  color: var(--accent);
+  color: var(--gold-1);
   line-height: 1;
 }
 
@@ -2101,7 +2101,7 @@
 .bm-highlight-value {
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 700;
-  color: var(--accent);
+  color: var(--gold-1);
   line-height: 1;
 }
 
@@ -2192,7 +2192,7 @@
 }
 
 .vb-val-ours {
-  color: var(--accent);
+  color: var(--gold-1);
   font-weight: 700;
   font-size: 0.68rem;
 }
@@ -2255,11 +2255,11 @@
 }
 
 .bm-th-ours {
-  color: var(--accent) !important;
+  color: var(--gold-1) !important;
 }
 
 .bm-td-ours {
-  color: var(--accent) !important;
+  color: var(--gold-1) !important;
   font-weight: 600;
 }
 
@@ -2281,7 +2281,7 @@
   transform: translateX(-50%);
   width: 20px;
   height: 2px;
-  background: var(--accent);
+  background: var(--gold-1);
   border-radius: 1px;
 }
 
