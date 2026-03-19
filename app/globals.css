@@ -533,14 +533,13 @@
   border-radius: 20px;
   background: linear-gradient(160deg, rgba(16, 16, 18, 0.98) 0%, rgba(10, 10, 12, 0.98) 100%);
   padding: clamp(16px, 2vw, 28px);
-  overflow: hidden;
+  min-height: 380px;
 }
 
 @media (min-width: 768px) {
   .wf-container {
     grid-template-columns: 1.4fr 1fr;
     gap: 1.6rem;
-    height: 520px;
   }
 }
 
@@ -675,7 +674,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  align-self: stretch;
+  align-self: start;
+  height: 380px;
   overflow: hidden;
 }
 
