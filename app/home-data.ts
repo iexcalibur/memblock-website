@@ -46,20 +46,17 @@ export const features: CapabilityItem[] = [
   {
     title: 'Temporal Reasoning',
     description: 'Time-aware retrieval with happened_at fields and natural language parsing.',
-    iconPath: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 6v6l4 2',
-    isNew: true
+    iconPath: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 6v6l4 2'
   },
   {
     title: 'Multi-Hop Retrieval',
     description: 'Iterative entity extraction + graph walk for complex reasoning.',
-    iconPath: 'M4 4h4v4H4zM16 4h4v4h-4zM10 16h4v4h-4zM8 6h8M6 8v6l4 2M18 8v6l-4 2',
-    isNew: true
+    iconPath: 'M4 4h4v4H4zM16 4h4v4h-4zM10 16h4v4h-4zM8 6h8M6 8v6l4 2M18 8v6l-4 2'
   },
   {
     title: 'Adaptive Context',
     description: 'Graph-expanded, deduplicated context with confidence gating.',
-    iconPath: 'M3 3h18v18H3zM9 3v18M3 9h18M3 15h18',
-    isNew: true
+    iconPath: 'M3 3h18v18H3zM9 3v18M3 9h18M3 15h18'
   }
 ]
 

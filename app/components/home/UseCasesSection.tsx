@@ -74,7 +74,7 @@ export default function UseCasesSection() {
       <div className="content-shell">
         <p className="micro-label">Use Cases</p>
         <h2 className="section-title reveal">
-          Power your AI systems with long-term memory in any scenario
+          Long-term memory for any scenario
         </h2>
 
         <div className="card-grid">
