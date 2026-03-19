@@ -64,10 +64,36 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <footer className="about-footer">
-          <p>&copy; {new Date().getFullYear()} MemBlock. All rights reserved.</p>
-        </footer>
       </main>
+
+      <footer id="company" className="mega-footer">
+        <div className="footer-glow" />
+        <div className="content-shell">
+          <div className="footer-grid">
+            <div>
+              <h3 className="footer-title">Platform</h3>
+              <ul className="footer-links">
+                <li><a href="/#workflow">How It Works</a></li>
+                <li><a href="/#features">Features</a></li>
+                <li><a href="/docs">Documentation</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="footer-title">Developers</h3>
+              <ul className="footer-links">
+                <li><a href="/docs">Documentation</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="footer-title">Company</h3>
+              <ul className="footer-links">
+                <li><a href="/about">About</a></li>
+              </ul>
+            </div>
+          </div>
+          <p className="footer-note">&copy; 2026 MemBlock. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   )
 }
