@@ -1149,6 +1149,89 @@
   color: var(--text-muted);
 }
 
+/* ── Use Cases ── */
+.uc-section {
+  background: #fafafa;
+  padding: 5rem 0;
+}
+
+.uc-title {
+  text-align: center;
+  color: #111;
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  max-width: 640px;
+  margin: 0 auto 3rem;
+  line-height: 1.25;
+}
+
+.uc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.uc-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.2s;
+}
+
+.uc-card:nth-child(3n) {
+  border-right: none;
+}
+
+.uc-card:nth-child(n+4) {
+  border-bottom: none;
+}
+
+.uc-card:hover {
+  background: #f9fafb;
+}
+
+.uc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+}
+
+.uc-label {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #111;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 640px) {
+  .uc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .uc-card:nth-child(3n) {
+    border-right: 1px solid #e5e7eb;
+  }
+  .uc-card:nth-child(2n) {
+    border-right: none;
+  }
+  .uc-card:nth-child(n+4) {
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .uc-card:nth-child(n+5) {
+    border-bottom: none;
+  }
+}
+
 .quickstart {
   display: grid;
   gap: 1.2rem;
