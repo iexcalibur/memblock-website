@@ -78,7 +78,7 @@ export const terminalOutput = [
 export const footerColumns: FooterColumn[] = [
   {
     title: 'Platform',
-    links: ['How It Works', 'Features', 'Documentation']
+    links: ['How It Works', 'Features', 'Benchmark', 'Documentation']
   },
   {
     title: 'Developers',

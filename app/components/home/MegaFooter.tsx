@@ -18,6 +18,7 @@ export default function MegaFooter({ columns }: MegaFooterProps) {
                   const href =
                     link === 'Documentation' ? '/docs'
                     : link === 'About' ? '/about'
+                    : link === 'Benchmark' ? '/benchmark'
                     : link === 'How It Works' ? '#workflow'
                     : link === 'Features' ? '#features'
                     : '#'
