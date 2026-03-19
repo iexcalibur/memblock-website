@@ -131,6 +131,52 @@ export default function BenchmarkPage() {
             ))}
           </div>
 
+          {/* What is LoCoMo */}
+          <section className="docs-section">
+            <h2 className="docs-section-title">What is the LoCoMo Benchmark?</h2>
+            <div className="card-grid">
+              <article className="surface-card reveal" style={{ '--reveal-delay': '0ms' } as CSSProperties}>
+                <div className="card-head">
+                  <span className="line-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                  </span>
+                </div>
+                <h3 className="card-title">Long Conversations</h3>
+                <p className="card-copy">
+                  LoCoMo tests memory systems on 50+ real-world conversational transcripts — each spanning thousands of turns — to evaluate how well systems retain and recall information over time.
+                </p>
+              </article>
+              <article className="surface-card reveal" style={{ '--reveal-delay': '70ms' } as CSSProperties}>
+                <div className="card-head">
+                  <span className="line-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 4h4v4H4zM16 4h4v4h-4zM10 16h4v4h-4zM8 6h8M6 8v6l4 2M18 8v6l-4 2" />
+                    </svg>
+                  </span>
+                </div>
+                <h3 className="card-title">Five Reasoning Categories</h3>
+                <p className="card-copy">
+                  Questions span single-hop factual recall, multi-hop inference across conversations, temporal ordering, open-domain generation, and adversarial unanswerable queries.
+                </p>
+              </article>
+              <article className="surface-card reveal" style={{ '--reveal-delay': '140ms' } as CSSProperties}>
+                <div className="card-head">
+                  <span className="line-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 20V10M18 20V4M6 20v-4" />
+                    </svg>
+                  </span>
+                </div>
+                <h3 className="card-title">Industry Standard</h3>
+                <p className="card-copy">
+                  Published at ACL 2024, LoCoMo is the standard benchmark for evaluating long-term memory in conversational AI systems. Scored by F1 overlap with gold-standard human answers.
+                </p>
+              </article>
+            </div>
+          </section>
+
           {/* Vertical bar chart */}
           <section id="results" className="docs-section">
             <h2 className="docs-section-title">Results by Category</h2>
