@@ -6,7 +6,6 @@ import FeaturesSection from './components/home/ReadinessSection'
 import TopNav from './components/home/TopNav'
 import BenchmarkSection from './components/home/BenchmarkSection'
 import BlockBuilderSection from './components/home/BlockBuilderSection'
-import MemoryFlowSection from './components/home/MemoryFlowSection'
 import ProductionSection from './components/home/ProductionSection'
 import UseCasesSection from './components/home/UseCasesSection'
 import WorkflowSection from './components/home/WorkflowSection'
@@ -20,7 +19,6 @@ export default function HomePage() {
         <HeroSection />
         <WorkflowSection />
         <BlockBuilderSection />
-        <MemoryFlowSection />
         <FeaturesSection features={features} />
         <ProductionSection />
         <UseCasesSection />

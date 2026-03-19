@@ -3,32 +3,32 @@ import { CSSProperties } from 'react'
 const productionFeatures = [
   {
     title: 'PostgreSQL + pgvector',
-    description: 'Production storage with full-text search, GIN indexes, and native HNSW vector search.',
+    description: 'Production-grade storage with full-text search and native vector search built in.',
     icon: 'M4 6h16M4 10h16M4 14h16M4 18h16',
   },
   {
     title: 'Multi-Tenant Isolation',
-    description: 'User-scoped data with composite keys. Org, project, session, and agent-level scoping.',
+    description: 'User-scoped data at every level — org, project, session, and agent.',
     icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
   },
   {
     title: 'Connection Pooling',
-    description: 'LRU-cached MemBlockPool with per-user instances and psycopg_pool for concurrent access.',
+    description: 'Efficient pooling with per-user instances for high-concurrency workloads.',
     icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
   },
   {
     title: 'LLM Auto-Extraction',
-    description: 'Extract structured memories from conversations via OpenAI, Anthropic, or Gemini.',
+    description: 'Extract structured memories from conversations using any major LLM provider.',
     icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z',
   },
   {
     title: 'Org-Level Analytics',
-    description: 'Track questions across users. Trending topics, frequency counts, and noise filtering.',
+    description: 'Track questions across users with trending topics and noise filtering.',
     icon: 'M18 20V10M12 20V4M6 20v-6',
   },
   {
     title: 'Per-Block Encryption',
-    description: 'AES-256-GCM with per-block levels — encrypt what matters, leave the rest fast.',
+    description: 'AES-256-GCM encryption at the block level — encrypt what matters, leave the rest fast.',
     icon: 'M12 2L4 7v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V7l-8-5z',
   },
 ]
