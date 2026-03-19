@@ -4,6 +4,7 @@ import MegaFooter from './components/home/MegaFooter'
 import QuickstartSection from './components/home/QuickstartSection'
 import FeaturesSection from './components/home/ReadinessSection'
 import TopNav from './components/home/TopNav'
+import BenchmarkSection from './components/home/BenchmarkSection'
 import BlockBuilderSection from './components/home/BlockBuilderSection'
 import UseCasesSection from './components/home/UseCasesSection'
 import WorkflowSection from './components/home/WorkflowSection'
@@ -19,6 +20,7 @@ export default function HomePage() {
         <BlockBuilderSection />
         <FeaturesSection features={features} />
         <UseCasesSection />
+        <BenchmarkSection />
         <QuickstartSection terminalOutput={terminalOutput} />
       </main>
 
