@@ -1,3 +1,5 @@
+import React from 'react'
+
 type TerminalLine = {
   type: 'shell' | 'prompt' | 'output' | 'comment'
   text: string
@@ -45,7 +47,7 @@ function colorize(line: TerminalLine) {
 
 function colorizeCode(code: string) {
   // Simple regex-based syntax highlighting
-  const parts: JSX.Element[] = []
+  const parts: React.ReactElement[] = []
   let remaining = code
   let key = 0
 
