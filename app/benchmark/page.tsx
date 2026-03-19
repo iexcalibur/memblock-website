@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { CSSProperties } from 'react'
 
 export const metadata: Metadata = {
   title: 'LoCoMo Benchmark | MemBlock',
@@ -198,12 +199,36 @@ export default function BenchmarkPage() {
           {/* Methodology */}
           <section id="methodology" className="docs-section">
             <h2 className="docs-section-title">Methodology</h2>
-            <div className="bm-method-grid">
-              {methodology.map((m) => (
-                <div key={m.title} className="bm-method-card">
-                  <h3 className="bm-method-name">{m.title}</h3>
-                  <p className="bm-method-desc">{m.description}</p>
-                </div>
+            <div className="card-grid">
+              {methodology.map((m, i) => (
+                <article
+                  key={m.title}
+                  className="surface-card reveal"
+                  style={{ '--reveal-delay': `${i * 70}ms` } as CSSProperties}
+                >
+                  <div className="card-head">
+                    <span className="line-icon">
+                      {m.title === 'Dataset' && (
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 7V4h16v3M9 20h6M12 4v16" />
+                        </svg>
+                      )}
+                      {m.title === 'Evaluation' && (
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M9 12l2 2 4-4M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
+                        </svg>
+                      )}
+                      {m.title === 'Setup' && (
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                        </svg>
+                      )}
+                    </span>
+                  </div>
+                  <h3 className="card-title">{m.title}</h3>
+                  <p className="card-copy">{m.description}</p>
+                </article>
               ))}
             </div>
           </section>
@@ -221,7 +246,6 @@ export default function BenchmarkPage() {
                 <li><a href="/#workflow">How It Works</a></li>
                 <li><a href="/#features">Features</a></li>
                 <li><a href="/benchmark">Benchmark</a></li>
-                <li><a href="/docs">Documentation</a></li>
               </ul>
             </div>
             <div>

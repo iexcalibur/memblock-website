@@ -523,7 +523,6 @@ async with AsyncMemBlockPool(
                 <li><a href="/#workflow">How It Works</a></li>
                 <li><a href="/#features">Features</a></li>
                 <li><a href="/benchmark">Benchmark</a></li>
-                <li><a href="/docs">Documentation</a></li>
               </ul>
             </div>
             <div>
