@@ -279,14 +279,6 @@ export default function BenchmarkPage() {
             </div>
           </section>
 
-          <section className="docs-section" style={{ textAlign: 'center', paddingTop: '3rem', borderTop: '1px solid var(--line-subtle)' }}>
-            <h2 className="hero-title" style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', textAlign: 'center' }}>
-              Give your AI a memory and personality.
-            </h2>
-            <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-              <a href="/docs" className="outline-pill">GET STARTED</a>
-            </div>
-          </section>
 
         </div>
       </main>
