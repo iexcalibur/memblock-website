@@ -77,7 +77,8 @@ export default function BlockBuilderSection() {
                 <span className="bb-type-badge bb-badge-event">EVENT</span>
                 <span className="bb-conf">0.88</span>
               </div>
-              <p className="bb-block-content">Since 2024</p>
+              <p className="bb-block-content">Joined Acme Corp</p>
+              <p className="bb-block-temporal">happened_at: 2024-01-01</p>
               <div className="bb-block-foot">
                 <span className="bb-lock-icon">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

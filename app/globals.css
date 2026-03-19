@@ -1631,6 +1631,14 @@
   line-height: 1.4;
 }
 
+.bb-block-temporal {
+  margin: 0.2rem 0 0;
+  color: #f59e0b;
+  font-size: 0.7rem;
+  font-family: var(--font-mono, monospace);
+  opacity: 0.85;
+}
+
 .bb-block-foot {
   display: flex;
   align-items: center;
