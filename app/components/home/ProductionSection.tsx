@@ -27,9 +27,9 @@ const productionFeatures = [
     icon: 'M18 20V10M12 20V4M6 20v-6',
   },
   {
-    title: 'Conflict Resolution',
-    description: 'LLM-powered decisions — automatically add, update, or remove contradicting memories.',
-    icon: 'M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3',
+    title: 'Per-Block Encryption',
+    description: 'AES-256-GCM with per-block levels — encrypt what matters, leave the rest fast.',
+    icon: 'M12 2L4 7v6c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V7l-8-5z',
   },
 ]
 
