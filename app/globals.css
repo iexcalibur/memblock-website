@@ -2335,8 +2335,11 @@
   .bm-highlights {
     grid-template-columns: repeat(2, 1fr);
   }
-  .bm-highlights .bm-highlight-card:last-child {
-    grid-column: span 2;
+}
+
+@media (max-width: 380px) {
+  .bm-highlights {
+    grid-template-columns: 1fr;
   }
 }
 
