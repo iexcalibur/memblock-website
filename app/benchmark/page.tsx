@@ -4,78 +4,53 @@ import { CSSProperties } from 'react'
 export const metadata: Metadata = {
   title: 'LoCoMo Benchmark | MemBlock',
   description:
-    'MemBlock achieves 92% accuracy on the LoCoMo long-conversation memory benchmark.',
+    'MemBlock achieves 93% accuracy on the LoCoMo long-conversation memory benchmark.',
 }
 
 type BenchRow = {
   category: string
   memblock: number
-  mem0: number
-  memobase: number
-  zep: number
-  memU: number
 }
 
 const benchData: BenchRow[] = [
-  { category: 'Single-Hop', memblock: 95, mem0: 67, memobase: 71, zep: 74, memU: 95 },
-  { category: 'Multi-Hop', memblock: 88, mem0: 51, memobase: 47, zep: 66, memU: 88 },
-  { category: 'Open Domain', memblock: 77, mem0: 73, memobase: 77, zep: 68, memU: 77 },
-  { category: 'Temporal', memblock: 93, mem0: 56, memobase: 85, zep: 80, memU: 93 },
-  { category: 'Overall', memblock: 92, mem0: 67, memobase: 76, zep: 75, memU: 92 },
-]
-
-const competitors = [
-  { key: 'memblock' as const, label: 'MemBlock', color: 'var(--gold-1)' },
-  { key: 'mem0' as const, label: 'mem0', color: '#6b6d75' },
-  { key: 'memobase' as const, label: 'Memobase', color: '#4a7c6f' },
-  { key: 'zep' as const, label: 'Zep', color: '#7c5a8e' },
-  { key: 'memU' as const, label: 'MemU', color: '#5b8fd4' },
+  { category: 'Adversarial', memblock: 100 },
+  { category: 'Single-Hop', memblock: 95 },
+  { category: 'Open Domain', memblock: 92 },
+  { category: 'Temporal', memblock: 90 },
+  { category: 'Multi-Hop', memblock: 90 },
+  { category: 'Overall', memblock: 93 },
 ]
 
 const methodology = [
   {
     title: 'Dataset',
     description:
-      'LoCoMo — a benchmark of 50+ long-form conversational transcripts designed to test memory systems across factual recall, temporal reasoning, multi-hop inference, and open-ended generation.',
+      'LoCoMo — a benchmark of long-form conversational transcripts with 100-200 questions each, designed to test memory systems across factual recall, temporal reasoning, multi-hop inference, open-ended generation, and adversarial detection.',
   },
   {
     title: 'Evaluation',
     description:
-      'Each system stores the full conversation as memory, then answers questions spanning single-hop factual, multi-hop reasoning, temporal ordering, and open-domain categories. Scored by F1 overlap with gold-standard answers.',
+      'LLM-as-Judge scoring — the same LLM answers each question twice: once with the full conversation (baseline) and once with only MemBlock-retrieved context. A judge LLM rates semantic equivalence on a 1-5 scale. This measures retrieval quality independent of any specific model.',
   },
   {
-    title: 'Setup',
+    title: 'Scoring',
     description:
-      'All systems tested with default configurations. MemBlock uses SQLite storage with FastEmbed embeddings and the adaptive context strategy introduced in v0.7.0.',
+      'Unlike token-level F1, LLM-as-Judge evaluates meaning, not wording. "Six months" and "January to June 2023" score identically. This reflects real-world usage where the answer\'s correctness matters, not its exact phrasing.',
   },
 ]
 
-function VerticalBarGroup({ row }: { row: BenchRow }) {
-  const maxVal = 100
+function HorizontalBar({ row }: { row: BenchRow }) {
+  const width = `${row.memblock}%`
   return (
-    <div className="vb-group">
-      <div className="vb-bars">
-        {competitors.map((c) => {
-          const val = row[c.key]
-          const isOurs = c.key === 'memblock'
-          const height = `${(val / maxVal) * 100}%`
-          const opacity = isOurs ? 1 : 0.35 + (val / maxVal) * 0.45
-          return (
-            <div key={c.key} className="vb-col">
-              <span className={`vb-val ${isOurs ? 'vb-val-ours' : ''}`}>{val}</span>
-              <div
-                className={`vb-bar ${isOurs ? 'vb-bar-ours' : ''}`}
-                style={{
-                  height,
-                  background: c.color,
-                  opacity: isOurs ? 1 : opacity,
-                }}
-              />
-            </div>
-          )
-        })}
+    <div className="hb-row">
+      <span className="hb-label">{row.category}</span>
+      <div className="hb-track">
+        <div
+          className="hb-fill"
+          style={{ width, '--bar-width': width } as CSSProperties}
+        />
       </div>
-      <span className="vb-cat">{row.category}</span>
+      <span className="hb-val">{row.memblock}%</span>
     </div>
   )
 }
@@ -90,7 +65,7 @@ export default function BenchmarkPage() {
           </a>
           <nav className="primary-nav" aria-label="Benchmark navigation">
             <a href="#results" className="nav-link">RESULTS</a>
-            <a href="#comparison" className="nav-link">COMPARISON</a>
+            <a href="#details" className="nav-link">DETAILS</a>
             <a href="#methodology" className="nav-link">METHODOLOGY</a>
           </nav>
           <div className="nav-right">
@@ -113,8 +88,8 @@ export default function BenchmarkPage() {
               MemBlock Benchmark Results
             </h1>
             <p className="section-copy">
-              92% overall accuracy on the LoCoMo long-conversation memory dataset,
-              matching or exceeding dedicated memory frameworks.
+              93% overall accuracy on the LoCoMo long-conversation memory dataset,
+              with 100% adversarial detection, 95% single-hop, and 92% open-domain.
             </p>
           </div>
 
@@ -171,70 +146,44 @@ export default function BenchmarkPage() {
                 </div>
                 <h3 className="card-title">Industry Standard</h3>
                 <p className="card-copy">
-                  Published at ACL 2024, LoCoMo is the standard benchmark for evaluating long-term memory in conversational AI systems. Scored by F1 overlap with gold-standard human answers.
+                  Published at ACL 2024, LoCoMo is the standard benchmark for evaluating long-term memory in conversational AI systems. We use LLM-as-Judge scoring for semantic evaluation.
                 </p>
               </article>
             </div>
           </section>
 
-          {/* Vertical bar chart */}
+          {/* Horizontal bar chart */}
           <section id="results" className="docs-section">
             <h2 className="docs-section-title">Results by Category</h2>
             <p className="docs-section-desc" style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-              Vertical bars show accuracy (%) for each system. MemBlock highlighted, others dimmed relative to score.
+              LLM-as-Judge accuracy (%) — how well MemBlock-retrieved context matches full-conversation answers.
             </p>
 
-            {/* Legend */}
-            <div className="bm-legend">
-              {competitors.map((c) => (
-                <div key={c.key} className="bm-legend-item">
-                  <span
-                    className="bm-legend-dot"
-                    style={{ background: c.color, opacity: c.key === 'memblock' ? 1 : 0.6 }}
-                  />
-                  <span className="bm-legend-label">{c.label}</span>
+            <div className="hb-chart">
+              {benchData.map((row, i) => (
+                <div key={row.category} className="reveal" style={{ '--reveal-delay': `${i * 60}ms` } as CSSProperties}>
+                  <HorizontalBar row={row} />
                 </div>
-              ))}
-            </div>
-
-            <div className="vb-chart">
-              {benchData.map((row) => (
-                <VerticalBarGroup key={row.category} row={row} />
               ))}
             </div>
           </section>
 
-          {/* Comparison table */}
-          <section id="comparison" className="docs-section">
-            <h2 className="docs-section-title">Full Comparison</h2>
+          {/* Results table */}
+          <section id="details" className="docs-section">
+            <h2 className="docs-section-title">Detailed Results</h2>
             <div className="bm-table-wrap">
               <table className="bm-table">
                 <thead>
                   <tr>
                     <th>Category</th>
-                    {competitors.map((c) => (
-                      <th key={c.key} className={c.key === 'memblock' ? 'bm-th-ours' : ''}>
-                        {c.label}
-                      </th>
-                    ))}
+                    <th className="bm-th-ours">MemBlock</th>
                   </tr>
                 </thead>
                 <tbody>
                   {benchData.map((row) => (
                     <tr key={row.category}>
                       <td className="bm-td-cat">{row.category}</td>
-                      {competitors.map((c) => {
-                        const val = row[c.key]
-                        const isMax = val === Math.max(...competitors.map((x) => row[x.key]))
-                        return (
-                          <td
-                            key={c.key}
-                            className={`${c.key === 'memblock' ? 'bm-td-ours' : ''} ${isMax ? 'bm-td-best' : ''}`}
-                          >
-                            {val}%
-                          </td>
-                        )
-                      })}
+                      <td className="bm-td-ours bm-td-best">{row.memblock}%</td>
                     </tr>
                   ))}
                 </tbody>
@@ -264,7 +213,7 @@ export default function BenchmarkPage() {
                           <path d="M9 12l2 2 4-4M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" />
                         </svg>
                       )}
-                      {m.title === 'Setup' && (
+                      {m.title === 'Scoring' && (
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
                           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
@@ -299,6 +248,7 @@ export default function BenchmarkPage() {
               <h3 className="footer-title">Developers</h3>
               <ul className="footer-links">
                 <li><a href="/docs">Documentation</a></li>
+                <li><a href="https://pypi.org/project/memblock/" target="_blank" rel="noopener noreferrer">PyPI</a></li>
               </ul>
             </div>
             <div>

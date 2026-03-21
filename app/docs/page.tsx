@@ -529,6 +529,7 @@ async with AsyncMemBlockPool(
               <h3 className="footer-title">Developers</h3>
               <ul className="footer-links">
                 <li><a href="/docs">Documentation</a></li>
+                <li><a href="https://pypi.org/project/memblock/" target="_blank" rel="noopener noreferrer">PyPI</a></li>
               </ul>
             </div>
             <div>

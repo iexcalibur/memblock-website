@@ -15,16 +15,18 @@ export default function MegaFooter({ columns }: MegaFooterProps) {
               <h3 className="footer-title">{column.title}</h3>
               <ul className="footer-links">
                 {column.links.map((link) => {
+                  const isExternal = link === 'PyPI'
                   const href =
                     link === 'Documentation' ? '/docs'
                     : link === 'About' ? '/about'
                     : link === 'Benchmark' ? '/benchmark'
                     : link === 'How It Works' ? '#workflow'
                     : link === 'Features' ? '#features'
+                    : link === 'PyPI' ? 'https://pypi.org/project/memblock/'
                     : '#'
                   return (
                     <li key={link}>
-                      <a href={href}>{link}</a>
+                      <a href={href} {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{link}</a>
                     </li>
                   )
                 })}

@@ -2,9 +2,9 @@ import { CSSProperties } from 'react'
 
 const highlights = [
   { label: 'Single-Hop', value: 95, suffix: '%' },
-  { label: 'Multi-Hop', value: 88, suffix: '%' },
-  { label: 'Temporal', value: 93, suffix: '%' },
-  { label: 'Overall', value: 92, suffix: '%' },
+  { label: 'Open-Domain', value: 92, suffix: '%' },
+  { label: 'Temporal', value: 90, suffix: '%' },
+  { label: 'Overall', value: 93, suffix: '%' },
 ]
 
 export default function BenchmarkSection() {
@@ -15,7 +15,7 @@ export default function BenchmarkSection() {
           <div className="bench-copy">
             <p className="micro-label">LoCoMo Benchmark</p>
             <h2 className="section-title">
-              92% accuracy on the LoCoMo benchmark
+              93% accuracy on the LoCoMo benchmark
             </h2>
             <p className="section-copy">
               MemBlock achieves state-of-the-art results across all reasoning

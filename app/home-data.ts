@@ -64,7 +64,7 @@ export const footerColumns: FooterColumn[] = [
   },
   {
     title: 'Developers',
-    links: ['Documentation']
+    links: ['Documentation', 'PyPI']
   },
   {
     title: 'Company',
