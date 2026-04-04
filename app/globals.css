@@ -2346,12 +2346,11 @@
 /* ── Contact Section ── */
 
 .contact-shell {
-  max-width: 800px;
-  margin-inline: auto;
+  max-width: var(--content-max, 1680px);
 }
 
 .contact-header {
-  text-align: center;
+  text-align: left;
   margin-bottom: 3.5rem;
 }
 
