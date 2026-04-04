@@ -3,7 +3,7 @@ type TopNavProps = {
   requestDemoHref?: string
 }
 
-export default function TopNav({ navItems, requestDemoHref = '#quickstart' }: TopNavProps) {
+export default function TopNav({ navItems, requestDemoHref = '#contact' }: TopNavProps) {
   return (
     <header className="top-nav">
       <div className="content-shell nav-shell">
@@ -29,7 +29,7 @@ export default function TopNav({ navItems, requestDemoHref = '#quickstart' }: To
 
         <div className="nav-right">
           <a href={requestDemoHref} className="outline-pill nav-pill">
-            GET STARTED
+            GET IN TOUCH
           </a>
         </div>
       </div>

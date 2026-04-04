@@ -2346,18 +2346,19 @@
 /* ── Contact Section ── */
 
 .contact-shell {
-  max-width: 960px;
+  max-width: 800px;
+  margin-inline: auto;
 }
 
 .contact-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr 240px;
-  gap: 2.5rem;
+  grid-template-columns: 1fr 220px;
+  gap: 3rem;
   align-items: start;
 }
 
@@ -2375,7 +2376,7 @@
 
 .form-input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem 1rem;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(130, 120, 106, 0.25);
   border-radius: 8px;
@@ -2384,6 +2385,7 @@
   font-size: 0.88rem;
   outline: none;
   transition: border-color 200ms ease;
+  box-sizing: border-box;
 }
 
 .form-input::placeholder {
@@ -2397,13 +2399,13 @@
 
 .form-textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 140px;
 }
 
 .contact-submit {
   align-self: flex-start;
   cursor: pointer;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 
 .contact-submit:disabled {
@@ -2420,11 +2422,12 @@
 .contact-links {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.6rem;
+  padding-top: 1.6rem;
 }
 
 .contact-links-title {
-  margin: 0 0 0.25rem;
+  margin: 0 0 0.4rem;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -2436,12 +2439,12 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.65rem 1rem;
+  padding: 0.6rem 0.9rem;
   border: 1px solid rgba(130, 120, 106, 0.2);
   border-radius: 8px;
   color: var(--text-secondary);
   font-family: 'Manrope', sans-serif;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   text-decoration: none;
   transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
 }
@@ -2464,6 +2467,7 @@
   .contact-links {
     flex-direction: row;
     flex-wrap: wrap;
+    padding-top: 0;
   }
 
   .contact-link {
