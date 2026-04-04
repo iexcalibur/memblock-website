@@ -9,6 +9,7 @@ import BlockBuilderSection from './components/home/BlockBuilderSection'
 import ProductionSection from './components/home/ProductionSection'
 import UseCasesSection from './components/home/UseCasesSection'
 import WorkflowSection from './components/home/WorkflowSection'
+import ContactSection from './components/home/ContactSection'
 
 export default function HomePage() {
   return (
@@ -24,6 +25,7 @@ export default function HomePage() {
         <UseCasesSection />
         <BenchmarkSection />
         <QuickstartSection />
+        <ContactSection />
       </main>
 
       <MegaFooter columns={footerColumns} />
