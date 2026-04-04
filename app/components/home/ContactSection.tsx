@@ -112,7 +112,7 @@ export default function ContactSection() {
               <span>LinkedIn</span>
             </a>
 
-            <
+            <a
               href="https://pypi.org/project/memblock/"
               target="_blank"
               rel="noopener noreferrer"
