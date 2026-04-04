@@ -44,7 +44,7 @@ export default function ContactSection() {
         <div className="contact-grid">
           <form onSubmit={handleSubmit} className="contact-form reveal">
             {/* Replace YOUR_ACCESS_KEY with your Web3Forms access key */}
-            <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY" />
+            <input type="hidden" name="access_key" value="3002a820-082a-42f9-a733-e084067c00ba" />
             <input type="hidden" name="subject" value="MemBlock Website Contact" />
 
             <div className="form-row">
