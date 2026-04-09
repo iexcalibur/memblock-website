@@ -1,10 +1,10 @@
 import { CSSProperties } from 'react'
 
 const highlights = [
-  { label: 'Single-Hop', value: 95, suffix: '%' },
-  { label: 'Open-Domain', value: 92, suffix: '%' },
-  { label: 'Temporal', value: 90, suffix: '%' },
-  { label: 'Overall', value: 93, suffix: '%' },
+  { label: 'LongMemEval R@5', value: 97.2, suffix: '%' },
+  { label: 'LoCoMo R@5', value: 57.7, suffix: '%' },
+  { label: 'Zero API Calls', value: 0, suffix: '', display: 'Local' },
+  { label: 'vs MemPalace Speed', value: 10, suffix: 'x' },
 ]
 
 export default function BenchmarkSection() {
@@ -13,14 +13,14 @@ export default function BenchmarkSection() {
       <div className="content-shell">
         <div className="bench-layout reveal">
           <div className="bench-copy">
-            <p className="micro-label">LoCoMo Benchmark</p>
+            <p className="micro-label">Head-to-Head Benchmarks</p>
             <h2 className="section-title">
-              93% accuracy on the LoCoMo benchmark
+              97.2% Recall@5 on LongMemEval
             </h2>
             <p className="section-copy">
-              MemBlock achieves state-of-the-art results across all reasoning
-              categories — single-hop, multi-hop, temporal, and open-domain — on the
-              LoCoMo long-conversation memory dataset.
+              MemBlock beats MemPalace (96.6%) on LongMemEval with zero API calls.
+              Tested head-to-head on the same datasets, same metrics, same machine.
+              10x faster retrieval with SQLite vs ChromaDB.
             </p>
             <a href="/benchmark" className="outline-pill">
               VIEW FULL RESULTS
@@ -35,7 +35,7 @@ export default function BenchmarkSection() {
                 style={{ '--reveal-delay': `${i * 80}ms` } as CSSProperties}
               >
                 <span className="bench-value">
-                  {h.value}
+                  {h.display ?? h.value}
                   <span className="bench-suffix">{h.suffix}</span>
                 </span>
                 <span className="bench-label">{h.label}</span>
