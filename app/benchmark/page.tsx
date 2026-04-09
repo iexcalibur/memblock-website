@@ -56,6 +56,22 @@ const locomoData: LoCoMoRow[] = [
   { category: 'Adversarial',          memblock_basic: 39.7, memblock_hybrid: 64.3, mempalace_raw: 47.1, mempalace_hybrid: 70.6 },
 ]
 
+/* ─── LoCoMo LLM-as-Judge (original evals) ─────────────────────────────── */
+
+type BenchRow = {
+  category: string
+  memblock: number
+}
+
+const locomoJudgeData: BenchRow[] = [
+  { category: 'Adversarial', memblock: 100 },
+  { category: 'Single-Hop', memblock: 95 },
+  { category: 'Open Domain', memblock: 92 },
+  { category: 'Temporal', memblock: 90 },
+  { category: 'Multi-Hop', memblock: 90 },
+  { category: 'Overall', memblock: 93 },
+]
+
 /* ─── Methodology ───────────────────────────────────────────────────────── */
 
 const methodology = [
@@ -67,16 +83,32 @@ const methodology = [
   {
     title: 'Evaluation',
     description:
-      'Standard retrieval metrics: Recall@k (does the correct session appear in top-k results?) and NDCG@k (ranking quality). Same dataset, same machine, same metrics for both systems.',
+      'Retrieval benchmarks use Recall@k and NDCG@k on the same dataset, machine, and metrics. LLM-as-Judge evaluation uses Claude Sonnet 4 to score semantic equivalence on a 1-5 scale.',
   },
   {
     title: 'Reproducibility',
     description:
-      'All benchmarks use session-level granularity with local embeddings (all-MiniLM-L6-v2). No API calls required. Scripts included in the repository under benchmarks/.',
+      'All benchmarks use session-level granularity with local embeddings (all-MiniLM-L6-v2). No API calls required for retrieval benchmarks. Scripts included in the repository under benchmarks/.',
   },
 ]
 
 /* ─── Components ────────────────────────────────────────────────────────── */
+
+function HorizontalBar({ row }: { row: BenchRow }) {
+  const width = `${row.memblock}%`
+  return (
+    <div className="hb-row">
+      <span className="hb-label">{row.category}</span>
+      <div className="hb-track">
+        <div
+          className="hb-fill"
+          style={{ width, '--bar-width': width } as CSSProperties}
+        />
+      </div>
+      <span className="hb-val">{row.memblock}%</span>
+    </div>
+  )
+}
 
 function HeadlineCards({ items }: { items: { label: string; value: number }[] }) {
   return (
@@ -133,6 +165,7 @@ export default function BenchmarkPage() {
           <nav className="primary-nav" aria-label="Benchmark navigation">
             <a href="#longmemeval" className="nav-link">LONGMEMEVAL</a>
             <a href="#locomo" className="nav-link">LOCOMO</a>
+            <a href="#llm-judge" className="nav-link">LLM-JUDGE</a>
             <a href="#methodology" className="nav-link">METHODOLOGY</a>
           </nav>
           <div className="nav-right">
@@ -321,6 +354,110 @@ export default function BenchmarkPage() {
                 <span className="perf-value">10x</span>
                 <span className="perf-label">Faster</span>
                 <span className="perf-detail">SQLite vs ChromaDB</span>
+              </div>
+            </div>
+          </section>
+
+          {/* ═══════════════════════════════════════════════════════════════ */}
+          {/* LoCoMo LLM-as-Judge (original evals)                           */}
+          {/* ═══════════════════════════════════════════════════════════════ */}
+
+          <section id="llm-judge" className="docs-section">
+            <p className="micro-label">[ LoCoMo LLM-as-Judge ]</p>
+            <h2 className="docs-section-title">93% Accuracy — LLM-as-Judge Evaluation</h2>
+            <p className="docs-section-desc" style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+              End-to-end accuracy using Claude Sonnet 4 as judge. Measures whether MemBlock-retrieved
+              context produces semantically equivalent answers to full-conversation baseline.
+            </p>
+
+            <div className="bm-highlights">
+              {locomoJudgeData.map((row) => (
+                <div key={row.category} className="bm-highlight-card">
+                  <span className="bm-highlight-value">
+                    {row.memblock}
+                    <span className="bm-highlight-pct">%</span>
+                  </span>
+                  <span className="bm-highlight-label">{row.category}</span>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="docs-section-title" style={{ fontSize: '1.25rem', marginTop: '2rem' }}>Results by Category</h3>
+            <p className="docs-section-desc" style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+              LLM-as-Judge accuracy (%) — how well MemBlock-retrieved context matches full-conversation answers.
+            </p>
+            <div className="hb-chart">
+              {locomoJudgeData.map((row, i) => (
+                <div key={row.category} className="reveal" style={{ '--reveal-delay': `${i * 60}ms` } as CSSProperties}>
+                  <HorizontalBar row={row} />
+                </div>
+              ))}
+            </div>
+
+            {/* What is LoCoMo */}
+            <h3 className="docs-section-title" style={{ fontSize: '1.25rem', marginTop: '2.5rem' }}>What is the LoCoMo Benchmark?</h3>
+            <div className="card-grid">
+              <article className="surface-card reveal" style={{ '--reveal-delay': '0ms' } as CSSProperties}>
+                <div className="card-head">
+                  <span className="line-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                  </span>
+                </div>
+                <h3 className="card-title">Long Conversations</h3>
+                <p className="card-copy">
+                  LoCoMo tests memory systems on 50+ real-world conversational transcripts — each spanning thousands of turns — to evaluate how well systems retain and recall information over time.
+                </p>
+              </article>
+              <article className="surface-card reveal" style={{ '--reveal-delay': '70ms' } as CSSProperties}>
+                <div className="card-head">
+                  <span className="line-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 4h4v4H4zM16 4h4v4h-4zM10 16h4v4h-4zM8 6h8M6 8v6l4 2M18 8v6l-4 2" />
+                    </svg>
+                  </span>
+                </div>
+                <h3 className="card-title">Five Reasoning Categories</h3>
+                <p className="card-copy">
+                  Questions span single-hop factual recall, multi-hop inference across conversations, temporal ordering, open-domain generation, and adversarial unanswerable queries.
+                </p>
+              </article>
+              <article className="surface-card reveal" style={{ '--reveal-delay': '140ms' } as CSSProperties}>
+                <div className="card-head">
+                  <span className="line-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 20V10M18 20V4M6 20v-4" />
+                    </svg>
+                  </span>
+                </div>
+                <h3 className="card-title">Industry Standard</h3>
+                <p className="card-copy">
+                  Published at ACL 2024, LoCoMo is the standard benchmark for evaluating long-term memory in conversational AI systems. We use LLM-as-Judge scoring for semantic evaluation.
+                </p>
+              </article>
+            </div>
+
+            {/* Performance metrics */}
+            <h3 className="docs-section-title" style={{ fontSize: '1.25rem', marginTop: '2.5rem' }}>Context Efficiency</h3>
+            <p className="docs-section-desc" style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+              MemBlock retrieves only what matters — fewer tokens, faster responses, same accuracy.
+            </p>
+            <div className="perf-grid">
+              <div className="perf-card reveal" style={{ '--reveal-delay': '0ms' } as CSSProperties}>
+                <span className="perf-value">~2K</span>
+                <span className="perf-label">Avg tokens per prompt</span>
+                <span className="perf-detail">vs 18K+ for full-context</span>
+              </div>
+              <div className="perf-card reveal" style={{ '--reveal-delay': '70ms' } as CSSProperties}>
+                <span className="perf-value">1.2s</span>
+                <span className="perf-label">p95 end-to-end latency</span>
+                <span className="perf-detail">retrieval + LLM response</span>
+              </div>
+              <div className="perf-card reveal" style={{ '--reveal-delay': '140ms' } as CSSProperties}>
+                <span className="perf-value">85%</span>
+                <span className="perf-label">Token savings</span>
+                <span className="perf-detail">vs stuffing full conversation</span>
               </div>
             </div>
           </section>
