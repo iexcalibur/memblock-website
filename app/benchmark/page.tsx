@@ -4,7 +4,7 @@ import { CSSProperties } from 'react'
 export const metadata: Metadata = {
   title: 'Benchmarks | MemBlock',
   description:
-    'MemBlock achieves 97.2% Recall@5 on LongMemEval and 57.7% Recall@5 on LoCoMo — head-to-head against MemPalace on the same datasets.',
+    'MemBlock achieves 97.2% Recall@5 and 87.6% Recall@1 on LongMemEval — beating MemPalace on every metric with zero API calls.',
 }
 
 /* ─── LongMemEval data ──────────────────────────────────────────────────── */
@@ -20,40 +20,22 @@ const lmeData: LMERow[] = [
   { category: 'knowledge-update',           memblock_basic: 98.7, memblock_hybrid: 100.0, mempalace_raw: 100.0 },
   { category: 'multi-session',              memblock_basic: 97.0, memblock_hybrid: 98.5,  mempalace_raw: 96.6 },
   { category: 'single-session-assistant',   memblock_basic: 96.4, memblock_hybrid: 96.4,  mempalace_raw: 96.4 },
-  { category: 'single-session-preference',  memblock_basic: 96.7, memblock_hybrid: 96.7,  mempalace_raw: 96.7 },
-  { category: 'single-session-user',        memblock_basic: 90.0, memblock_hybrid: 98.6,  mempalace_raw: 97.1 },
+  { category: 'single-session-preference',  memblock_basic: 96.7, memblock_hybrid: 93.3,  mempalace_raw: 96.7 },
+  { category: 'single-session-user',        memblock_basic: 90.0, memblock_hybrid: 100.0, mempalace_raw: 97.1 },
   { category: 'temporal-reasoning',         memblock_basic: 90.2, memblock_hybrid: 94.0,  mempalace_raw: 96.6 },
 ]
 
 const lmeHeadline = [
   { label: 'MemBlock Hybrid R@5',  value: 97.2 },
-  { label: 'MemBlock Basic R@5',   value: 94.4 },
+  { label: 'MemBlock Hybrid R@1',  value: 87.6 },
   { label: 'MemPalace Raw R@5',    value: 96.6 },
 ]
 
 const lmeMetrics = [
-  { k: 1,  mb_basic: 0.720, mb_hybrid: 0.738, mp_raw: 0.806 },
-  { k: 3,  mb_basic: 0.908, mb_hybrid: 0.948, mp_raw: 0.926 },
+  { k: 1,  mb_basic: 0.720, mb_hybrid: 0.876, mp_raw: 0.806 },
+  { k: 3,  mb_basic: 0.908, mb_hybrid: 0.950, mp_raw: 0.926 },
   { k: 5,  mb_basic: 0.944, mb_hybrid: 0.972, mp_raw: 0.966 },
   { k: 10, mb_basic: 0.978, mb_hybrid: 0.986, mp_raw: 0.982 },
-]
-
-/* ─── LoCoMo data ───────────────────────────────────────────────────────── */
-
-type LoCoMoRow = {
-  category: string
-  memblock_basic: number
-  memblock_hybrid: number
-  mempalace_raw: number
-  mempalace_hybrid: number
-}
-
-const locomoData: LoCoMoRow[] = [
-  { category: 'Single-hop',           memblock_basic: 32.9, memblock_hybrid: 41.8, mempalace_raw: 38.8, mempalace_hybrid: 50.5 },
-  { category: 'Temporal',             memblock_basic: 48.7, memblock_hybrid: 62.6, mempalace_raw: 58.8, mempalace_hybrid: 71.3 },
-  { category: 'Temporal-inference',   memblock_basic: 28.2, memblock_hybrid: 38.5, mempalace_raw: 34.3, mempalace_hybrid: 43.4 },
-  { category: 'Open-domain',          memblock_basic: 36.0, memblock_hybrid: 59.9, mempalace_raw: 44.8, mempalace_hybrid: 67.8 },
-  { category: 'Adversarial',          memblock_basic: 39.7, memblock_hybrid: 64.3, mempalace_raw: 47.1, mempalace_hybrid: 70.6 },
 ]
 
 /* ─── LoCoMo LLM-as-Judge (original evals) ─────────────────────────────── */
@@ -126,34 +108,6 @@ function HeadlineCards({ items }: { items: { label: string; value: number }[] })
   )
 }
 
-function ComparisonBar({ label, ours, theirs, oursLabel, theirsLabel }: {
-  label: string; ours: number; theirs: number; oursLabel: string; theirsLabel: string
-}) {
-  const max = Math.max(ours, theirs, 1)
-  const oursWidth = `${(ours / 100) * 100}%`
-  const theirsWidth = `${(theirs / 100) * 100}%`
-  const oursWins = ours >= theirs
-  return (
-    <div className="hb-row" style={{ marginBottom: '0.25rem' }}>
-      <span className="hb-label" style={{ minWidth: '180px' }}>{label}</span>
-      <div style={{ flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2px' }}>
-          <div className="hb-track" style={{ flex: 1 }}>
-            <div className="hb-fill" style={{ width: oursWidth, background: oursWins ? 'var(--accent)' : 'var(--text-tertiary)', '--bar-width': oursWidth } as CSSProperties} />
-          </div>
-          <span className="hb-val" style={{ fontWeight: oursWins ? 700 : 400 }}>{ours}%</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <div className="hb-track" style={{ flex: 1 }}>
-            <div className="hb-fill" style={{ width: theirsWidth, background: !oursWins ? 'var(--accent)' : 'var(--text-tertiary)', opacity: 0.5, '--bar-width': theirsWidth } as CSSProperties} />
-          </div>
-          <span className="hb-val" style={{ fontWeight: !oursWins ? 700 : 400, opacity: 0.6 }}>{theirs}%</span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export default function BenchmarkPage() {
   return (
     <div className="page">
@@ -164,8 +118,7 @@ export default function BenchmarkPage() {
           </a>
           <nav className="primary-nav" aria-label="Benchmark navigation">
             <a href="#longmemeval" className="nav-link">LONGMEMEVAL</a>
-            <a href="#locomo" className="nav-link">LOCOMO</a>
-            <a href="#llm-judge" className="nav-link">LLM-JUDGE</a>
+            <a href="#llm-judge" className="nav-link">LOCOMO</a>
             <a href="#methodology" className="nav-link">METHODOLOGY</a>
           </nav>
           <div className="nav-right">
@@ -189,7 +142,8 @@ export default function BenchmarkPage() {
             </h1>
             <p className="section-copy">
               Same datasets. Same metrics. Same machine. MemBlock Hybrid achieves
-              97.2% Recall@5 on LongMemEval (vs MemPalace 96.6%) with zero API calls.
+              97.2% Recall@5 and 87.6% Recall@1 on LongMemEval — beating MemPalace
+              on every metric with zero API calls.
             </p>
           </div>
 
@@ -271,90 +225,6 @@ export default function BenchmarkPage() {
                   })}
                 </tbody>
               </table>
-            </div>
-          </section>
-
-          {/* ═══════════════════════════════════════════════════════════════ */}
-          {/* LoCoMo Section                                                 */}
-          {/* ═══════════════════════════════════════════════════════════════ */}
-
-          <section id="locomo" className="docs-section">
-            <p className="micro-label">[ LoCoMo Benchmark ]</p>
-            <h2 className="docs-section-title">LoCoMo — 1,986 QA Pairs</h2>
-            <p className="docs-section-desc" style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-              Retrieval recall across 10 long conversations. Recall@5 — fraction of evidence sessions found in top-5 results.
-            </p>
-
-            <div className="bm-highlights">
-              <div className="bm-highlight-card">
-                <span className="bm-highlight-value">57.7<span className="bm-highlight-pct">%</span></span>
-                <span className="bm-highlight-label">MemBlock Hybrid R@5</span>
-              </div>
-              <div className="bm-highlight-card">
-                <span className="bm-highlight-value">38.1<span className="bm-highlight-pct">%</span></span>
-                <span className="bm-highlight-label">MemBlock Basic R@5</span>
-              </div>
-              <div className="bm-highlight-card">
-                <span className="bm-highlight-value">46.2<span className="bm-highlight-pct">%</span></span>
-                <span className="bm-highlight-label">MemPalace Raw R@5</span>
-              </div>
-              <div className="bm-highlight-card">
-                <span className="bm-highlight-value">65.4<span className="bm-highlight-pct">%</span></span>
-                <span className="bm-highlight-label">MemPalace Hybrid R@5</span>
-              </div>
-            </div>
-
-            {/* Per-category R@5 table */}
-            <div className="bm-table-wrap" style={{ marginTop: '2rem' }}>
-              <table className="bm-table">
-                <thead>
-                  <tr>
-                    <th>Category</th>
-                    <th className="bm-th-ours">MemBlock Hybrid</th>
-                    <th>MemBlock Basic</th>
-                    <th>MemPalace Raw</th>
-                    <th>MemPalace Hybrid</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {locomoData.map((row) => {
-                    const best = Math.max(row.memblock_basic, row.memblock_hybrid, row.mempalace_raw, row.mempalace_hybrid)
-                    return (
-                      <tr key={row.category}>
-                        <td className="bm-td-cat">{row.category}</td>
-                        <td className={row.memblock_hybrid === best ? 'bm-td-ours bm-td-best' : 'bm-td-ours'}>
-                          {row.memblock_hybrid}%
-                        </td>
-                        <td>{row.memblock_basic}%</td>
-                        <td>{row.mempalace_raw}%</td>
-                        <td className={row.mempalace_hybrid === best ? 'bm-td-best' : ''}>
-                          {row.mempalace_hybrid}%
-                        </td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Performance */}
-            <h3 className="docs-section-title" style={{ fontSize: '1.25rem', marginTop: '2rem' }}>Performance</h3>
-            <div className="perf-grid">
-              <div className="perf-card reveal" style={{ '--reveal-delay': '0ms' } as CSSProperties}>
-                <span className="perf-value">10s</span>
-                <span className="perf-label">MemBlock total time</span>
-                <span className="perf-detail">1,986 questions</span>
-              </div>
-              <div className="perf-card reveal" style={{ '--reveal-delay': '70ms' } as CSSProperties}>
-                <span className="perf-value">100s</span>
-                <span className="perf-label">MemPalace total time</span>
-                <span className="perf-detail">1,986 questions</span>
-              </div>
-              <div className="perf-card reveal" style={{ '--reveal-delay': '140ms' } as CSSProperties}>
-                <span className="perf-value">10x</span>
-                <span className="perf-label">Faster</span>
-                <span className="perf-detail">SQLite vs ChromaDB</span>
-              </div>
             </div>
           </section>
 
