@@ -47,8 +47,8 @@ export default function AboutPage() {
             not what makes investors happy.
           </p>
           <p className="about-text">
-            This is a closed-source, commercially distributed product. The code is proprietary
-            because quality infrastructure deserves sustainable business models.
+            MemBlock is open source, released under the MIT license — free to use, modify,
+            and distribute. Quality infrastructure deserves to be open.
           </p>
         </section>
 
@@ -92,7 +92,7 @@ export default function AboutPage() {
               </ul>
             </div>
           </div>
-          <p className="footer-note">&copy; 2026 MemBlock. All rights reserved.</p>
+          <p className="footer-note">&copy; 2026 MemBlock. Open source under the MIT License.</p>
         </div>
       </footer>
     </div>

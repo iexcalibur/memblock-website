@@ -401,7 +401,7 @@ export default function BenchmarkPage() {
               </ul>
             </div>
           </div>
-          <p className="footer-note">&copy; 2026 MemBlock. All rights reserved.</p>
+          <p className="footer-note">&copy; 2026 MemBlock. Open source under the MIT License.</p>
         </div>
       </footer>
     </div>

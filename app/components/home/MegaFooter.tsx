@@ -34,7 +34,7 @@ export default function MegaFooter({ columns }: MegaFooterProps) {
             </div>
           ))}
         </div>
-        <p className="footer-note">&copy; 2026 MemBlock. All rights reserved.</p>
+        <p className="footer-note">&copy; 2026 MemBlock. Open source under the MIT License.</p>
       </div>
     </footer>
   )
